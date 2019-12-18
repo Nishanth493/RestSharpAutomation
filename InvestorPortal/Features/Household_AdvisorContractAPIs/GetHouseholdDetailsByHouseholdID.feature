@@ -1,9 +1,9 @@
-﻿Feature: GetHouseholdDetailsByHouseholdID
+﻿Feature: GetHouseHoldDetailsByHouseholdID
 
 
-	@AdvisorContracts_GetHouseholdDetailsByHouseholdID_Positive
-	@positive
-	Scenario Outline: AdvisorContracts_GetHouseholdDetailsByHouseholdID_Positive
+	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Positive
+	@Positive
+	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Positive
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then response should have "householdId,webHouseholdId,advisorContractId,agentSiebelID,riskProfile,firstName,lastName,displayName,sortName,advisorID,phone,fax,email,address1" fields
@@ -15,9 +15,9 @@
 	| Agent  | GetHouseHoldDetails                           |                                  
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9|
 
-	@AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative
-	@negative
-	Scenario Outline: AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative
+	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative
+	@Negative
+	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then Status Code is "404"
@@ -27,9 +27,9 @@
 	| Agent  | GetHouseHoldDetails                           |                                  
 	| AG1634 | householdaccountservice_URL,households/|
 
-	@AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_InvalidHouseHoldID
-	@negative
-	Scenario Outline: AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_InvalidHouseHoldID
+	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_InvalidHouseHoldID
+	@Negative
+	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_InvalidHouseHoldID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then Status Code is "404"
@@ -39,9 +39,9 @@
 	| Agent  | GetHouseHoldDetails                                             |
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9|
 
-	@AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_HouseHoldIDWithSpecialCharacters
-	@negative
-	Scenario Outline: AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_HouseHoldIDWithSpecialCharacters
+	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_HouseHoldIDWithSpecialCharacters
+	@Negative
+	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_HouseHoldIDWithSpecialCharacters
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then Status Code is "404"
@@ -51,8 +51,8 @@
 	| Agent  | GetHouseHoldDetails                                             |
 	| AG1634 | householdaccountservice_URL,households/CA#$Q9|
 
-@AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_WithoutLogin
-Scenario Outline: AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_WithoutLogin
+@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_WithoutLogin
+Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_WithoutLogin
 	Given User is not authorised on eWM
 	When User do a get call of "<GetHouseHoldPerformanceDetails>" API
 	Then Response should return as "unauthorized" request
@@ -63,8 +63,8 @@ Scenario Outline: AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_Wit
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9|
 
 
-@AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_WithOtherUserLogin
-Scenario Outline: AdvisorContracts_GetHouseholdDetailsByHouseholdID_Negative_WithOtherUserLogin
+@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_WithOtherUserLogin
+Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_WithOtherUserLogin
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldPerformanceDetails>" API
 	Then Response should return as "forbidden" request

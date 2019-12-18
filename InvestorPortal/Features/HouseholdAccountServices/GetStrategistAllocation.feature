@@ -1,6 +1,8 @@
 ﻿Feature: GetStrategistAllocation
+URL: /api/householdaccountservice/v1/households/{householdid}/strategistallocation
 
-@StrategistAllocationDetails_PositiveCase_ValidData
+@positive
+@StrategistAllocationDetails_ValidData
 Scenario Outline: Verify strategist allocation details are displayed for valid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetStrategistAllocation>" API
@@ -12,7 +14,8 @@ Scenario Outline: Verify strategist allocation details are displayed for valid d
 		| Agent  | GetStrategistAllocation                                                    |
 		| AG1634 | householdaccountservice_URL,households/,household_ID,/strategistallocation |
 
-@StrategistAllocationDetails_NegativeCase_InvalidHOuseHoldID
+@negative
+@StrategistAllocationDetails_InvalidHOuseHoldID
 Scenario Outline: Verify strategist allocation details are not displayed for invalid householdid that is #$%#%##
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetStrategistAllocation>" API
@@ -23,7 +26,8 @@ Scenario Outline: Verify strategist allocation details are not displayed for inv
 		| Agent  | GetStrategistAllocation                                                           |
 		| AG1634 | householdaccountservice_URL,households/,Invalidhousehold_ID,/strategistallocation |
 
-@StrategistAllocationDetails_NegativeCase_WithoutLogin
+@negative
+@StrategistAllocationDetails_WithoutLogin
 Scenario Outline: Verify strategist allocation details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetStrategistAllocation>" API
@@ -34,7 +38,8 @@ Scenario Outline: Verify strategist allocation details are not displayed without
 		| Agent  | GetStrategistAllocation                                                    |
 		| AG1634 | householdaccountservice_URL,households/,household_ID,/strategistallocation |
 
-@StrategistAllocationDetails_NegativeCase_WithOtherUserLogin
+@negative
+@StrategistAllocationDetails_WithOtherUserLogin
 Scenario Outline: Verify strategist allocation details are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetStrategistAllocation>" API

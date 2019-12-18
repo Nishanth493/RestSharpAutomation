@@ -1,5 +1,5 @@
 ﻿Feature: GetHouseholdPointToPointPortfolioSummary
-
+API URL: /api/householdaccountservice/v1/households/{householdid}/performancesummary/pointtopoint
 
 	@Household_GetHouseholdPointToPointPortfolioSummary_Positive
 	@positive

@@ -80,7 +80,7 @@ Scenario Outline: Download account activity data with fileType
 	Then Status Code is "200"
 	Then Response is Not Empty
 	Then response should have "Date,Type,Description,Holding,Quantity,Dollars,CUSIPNO,Ticker" fields
-	Then download file type is "<fileType>"
+	Then User verify downloaded file type is "<fileType>"
 
 	Examples:
 		| fileType | Agent  | ActivityAccountData                                                                               |

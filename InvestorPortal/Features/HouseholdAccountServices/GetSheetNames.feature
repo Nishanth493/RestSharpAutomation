@@ -1,6 +1,8 @@
 ﻿Feature: GetSheetNames
+URL: /api/documents/v1/household/{householdid}/factsheetnames
 
-@SheetNamesDetails_PositiveCase
+@positive
+@SheetNamesDetails_ValidData
 Scenario Outline: Verify sheet names details
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetSheetNames>" API
@@ -12,7 +14,8 @@ Scenario Outline: Verify sheet names details
 		| GetSheetNames                                             | Agent  |
 		| documentshousehold_URL,CA0FZ5household_ID,/factsheetnames | AG1634 |
 
-@SheetNamesDetails_NegativeCase_InvalidURL
+@negative
+@SheetNamesDetails_InvalidURL
 Scenario Outline: Verify sheet names are not displayed for invalid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetSheetNames>" API
@@ -23,7 +26,8 @@ Scenario Outline: Verify sheet names are not displayed for invalid data
 		| GetSheetNames                                                 | Agent  |
 		| documentshousehold_URL,CA0FZ5household_ID,/factsheetnames/abc | AG1634 |
 
-@SheetNamesDetails_NegativeCase_WithoutLogin
+@negative
+@SheetNamesDetails_WithoutLogin
 Scenario Outline: Verify sheetn names details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetSheetNames>" API
@@ -34,7 +38,8 @@ Scenario Outline: Verify sheetn names details are not displayed without authoriz
 		| GetSheetNames                                             | Agent  |
 		| documentshousehold_URL,CA0FZ5household_ID,/factsheetnames | AG1634 |
 
-@SheetNamesDetails_NegativeCase_WithOtherUserLogin
+@negative
+@SheetNamesDetails_WithOtherUserLogin
 Scenario Outline: Verify sheet names are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetSheetNames>" API

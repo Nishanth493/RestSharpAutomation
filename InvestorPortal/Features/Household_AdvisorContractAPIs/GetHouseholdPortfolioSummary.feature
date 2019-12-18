@@ -1,4 +1,6 @@
 ﻿Feature: GetHouseholdPortfolioSummary
+API URL: /api/householdaccountservice/v1/households/{householdid}/performancesummary
+
 
 @Household_GetHouseholdPortfolioSummary_Positive
 @positive

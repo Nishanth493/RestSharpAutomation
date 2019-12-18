@@ -15,28 +15,11 @@ namespace InvestorPortal.StepDefs.HouseholdAccountServices
 
     class GetActivityofAnAccount : BaseClass
     {
-
-        [Then(@"response should match ""(.*)"" is present")]
-        public void ThenResponseShouldMatchIsPresent(string fieldname)
-        {
-            //    string temp = string.Empty;
-
-            //    Newtonsoft.Json.Linq.JToken token = JObject.Parse(restApi().GetResponseData.Content);
-            //    var name = token.SelectTokens(fieldname);
-            //    //Console.WriteLine(_settings.Response.Content);
-            //    Console.WriteLine(name);
-            //    Assert.AreEqual(fieldname, name);
-            //    //var actual = token.SelectTokens(fieldname);
-            //}
-
-        }
-
         [Then(@"response ""(.*)"" should contain ""(.*)"" as field")]
         public void ThenResponseShouldContainAsField(string response, string field)
         {
             string temp = string.Empty;
             Newtonsoft.Json.Linq.JToken token = JObject.Parse(restApi().GetResponseData.Content);
-
 
             var name = token.SelectTokens(response);
             Console.WriteLine(name);
@@ -54,5 +37,14 @@ namespace InvestorPortal.StepDefs.HouseholdAccountServices
             }
 
         }
+
+        [Then(@"response should be sorted by Transaction date")]
+        public void ThenResponseShouldBeSortedByTransactionDate()
+        {
+            restApi().VerifyJSONFieldValueInResponse("response.activity[0].transactionDate", "20151016");
+            restApi().VerifyJSONFieldValueInResponse("response.activity[1].transactionDate", "20151021");
+
+        }
+
     }
 }

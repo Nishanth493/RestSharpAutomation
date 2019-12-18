@@ -1,8 +1,8 @@
-﻿Feature: GetHouseholdDetailsByContractorID
+﻿Feature: GetHouseHoldDetailsByContractorID
 
-@AdvisorContracts_GetHouseholdDetailsByContractorID_Positive
-@positive
-Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Positive
+@AdvisorContracts_GetHouseHoldDetailsByContractorID_Positive
+@Positive
+Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByContractorID_Positive
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then response should have "householdId,webHouseholdId,advisorContractId,agentSiebelID,riskProfile,firstName,lastName,displayName,sortName,advisorID,phone,fax,email,address1" fields
@@ -14,9 +14,9 @@ Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Positive
 	| Agent  | GetHouseHoldDetails                           |                                  
 	| AG1634 | householdaccountservice_URL,advisorcontracts/AG1634/households|
 
-@AdvisorContracts_GetHouseholdDetailsByContractorID_Negative
-@negative
-Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative
+@AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative
+@Negative
+Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then Status Code is "404"
@@ -26,9 +26,9 @@ Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative
 	| Agent  | GetHouseHoldDetails                           |                                  
 	| AG1634 | householdaccountservice_URL,advisorcontracts//households|
 
-	@AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_InvalidHouseHoldID
-	@negative
-	Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_InvalidHouseHoldID
+	@AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_InvalidHouseHoldID
+	@Negative
+	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_InvalidHouseHoldID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then Status Code is "404"
@@ -38,9 +38,9 @@ Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative
 	| Agent  | GetHouseHoldDetails                                             |
 	| AG1634 | householdaccountservice_URL,advisorcontracts/AG1634/households|
 
-	@AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_HouseHoldIDWithSpecialCharacters
-	@negative
-	Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_HouseHoldIDWithSpecialCharacters
+	@AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_HouseHoldIDWithSpecialCharacters
+	@Negative
+	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_HouseHoldIDWithSpecialCharacters
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then Status Code is "404"
@@ -50,8 +50,8 @@ Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative
 	| Agent  | GetHouseHoldDetails                                             |
 	| AG1634 | householdaccountservice_URL,advisorcontracts/AG1634/households|
 
-@AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_WithoutLogin
-Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_WithoutLogin
+@AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_WithoutLogin
+Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_WithoutLogin
 	Given User is not authorised on eWM
 	When User do a get call of "<GetHouseHoldPerformanceDetails>" API
 	Then Response should return as "unauthorized" request
@@ -62,8 +62,8 @@ Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_Wi
 	| AG1634 | householdaccountservice_URL,advisorcontracts/AG1634/households|
 
 
-@AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_WithOtherUserLogin
-Scenario Outline: AdvisorContracts_GetHouseholdDetailsByContractorID_Negative_WithOtherUserLogin
+@AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_WithOtherUserLogin
+Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByContractorID_Negative_WithOtherUserLogin
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldPerformanceDetails>" API
 	Then Response should return as "forbidden" request

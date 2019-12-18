@@ -4,13 +4,13 @@ APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/realizedgainloss/
 @accounts
 @download_realized_gain_loss
 @positive
-Scenario Outline: Download all types of realizedGainLoss value for funded account
+Scenario Outline: Download all types of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<realizedgainlosstotalvalue><Type>" API
 	Then Status Code is "200"
 	Then Response is Not Empty
 	Then response should have "Account Name,Account Number,Account Status,Position,Type,Symbol,Quantity,Purchase Date,Sale Date,Cost Basis,Proceeds,Gain/Loss,CUSIPNO,Wash sale Loss Disallowed,Date,Income" fields
-	Then download file type is "CSV"
+	Then User verify downloaded file type is "<CSV>"
 
 	Examples:
 		| Type | Agent  | realizedgainlosstotalvalue                                                                              |
@@ -19,13 +19,13 @@ Scenario Outline: Download all types of realizedGainLoss value for funded accoun
 @accounts
 @download_realized_gain_loss
 @positive
-Scenario Outline: Download Short Term type of realizedGainLoss value for funded account
+Scenario Outline: Download Short Term type of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<realizedgainlosstotalvalue><Type>" API
 	Then Status Code is "200"
 	Then Response is Not Empty
 	Then response should have "Account Name,Account Number,Account Status,Position,Type,Symbol,Quantity,Purchase Date,Sale Date,Cost Basis,Proceeds,Gain/Loss,CUSIPNO,Wash sale Loss Disallowed,Date,Income" fields
-	Then download file type is "CSV"
+	Then User verify downloaded file type is "<CSV>"
 
 	Examples:
 		| Type | Agent  | realizedgainlosstotalvalue                                                                              |
@@ -34,13 +34,13 @@ Scenario Outline: Download Short Term type of realizedGainLoss value for funded 
 @accounts
 @download_realized_gain_loss
 @positive
-Scenario Outline: Download Long Term type of realizedGainLoss value for funded account
+Scenario Outline: Download Long Term type of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<realizedgainlosstotalvalue><Type>" API
 	Then Status Code is "200"
 	Then Response is Not Empty
 	Then response should have "Account Name,Account Number,Account Status,Position,Type,Symbol,Quantity,Purchase Date,Sale Date,Cost Basis,Proceeds,Gain/Loss,CUSIPNO,Wash sale Loss Disallowed,Date,Income" fields
-	Then download file type is "CSV"
+	Then User verify downloaded file type is "<CSV>"
 
 	Examples:
 		| Type | Agent  | realizedgainlosstotalvalue                                                                              |
@@ -49,13 +49,13 @@ Scenario Outline: Download Long Term type of realizedGainLoss value for funded a
 @accounts
 @download_realized_gain_loss
 @positive
-Scenario Outline: Download Dividend, Interest, Other types of realizedGainLoss value for funded account
+Scenario Outline: Download Dividend, Interest, Other types of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<realizedgainlosstotalvalue><Type>" API
 	Then Status Code is "200"
 	Then Response is Not Empty
 	Then response should have "Account Name,Account Number,Account Status,Position,Type,Symbol,Quantity,Purchase Date,Sale Date,Cost Basis,Proceeds,Gain/Loss,CUSIPNO,Wash sale Loss Disallowed,Date,Income" fields
-	Then download file type is "CSV"
+	Then User verify downloaded file type is "<CSV>"
 
 	Examples:
 		| Type | Agent  | realizedgainlosstotalvalue                                                                              |
@@ -95,7 +95,7 @@ Scenario Outline: Download Account realizedGainLoss value with fileType
 	When User do a get call of "<realizedgainlosstotalvalue><fileType>" API
 	Then Status Code is "200"
 	Then Response is Not Empty
-	Then download file type is "<fileType>"
+	Then User verify downloaded file type is "<fileType>"
 
 	Examples:
 		| fileType | Agent  | realizedgainlosstotalvalue                                                                                                |
@@ -111,7 +111,7 @@ Scenario Outline: Download Account realizedGainLoss value with fileType blank
 	When User do a get call of "<realizedgainlosstotalvalue>" API
 	Then Status Code is "200"
 	Then Response is Not Empty
-	Then download file type is "CSV"
+	Then User verify downloaded file type is "<CSV>"
 
 	Examples:
 		| Agent  | realizedgainlosstotalvalue                                                                                      |

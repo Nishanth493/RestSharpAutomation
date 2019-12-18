@@ -23,7 +23,7 @@ Scenario Outline: Download holdings by asset class data with fileType
 	When User do a get call of "<HoldingsByAssetClass><fileType>" API
 	Then Status Code is "200"
 	Then Response is Not Empty
-	Then download file type is "<fileType>"
+	Then User verify downloaded file type is "<fileType>"
 
 	Examples:
 		| fileType | Agent  | HoldingsByAssetClass                                                                   |

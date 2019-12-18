@@ -9,10 +9,10 @@ Scenario Outline: Get custodial account info
 	When User do a get call of "<CustodialAccountInfo>" API
 	Then Status Code is "200"
 	Then response should have "accountFeaturesSection,accountInfoDataAvailable,accountName,beneficiariesSection" fields
-	Examples: 
-	| Agent  | CustodialAccountInfo                                        |
-	| AG1634 | householdaccountservice_URL,accounts/,AC5996,/custodialinfo |
 
+	Examples:
+		| Agent  | CustodialAccountInfo                                        |
+		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/custodialinfo |
 
 @accounts
 @get_custodial_account_info
@@ -22,10 +22,10 @@ Scenario Outline: Get custodial account info using invalid AccountID
 	When User do a get call of "<CustodialAccountInfo>" API
 	Then Status Code is "404"
 	Then Response should be returned as empty
-	Examples: 
-	| Agent  | CustodialAccountInfo                                        |
-	| AG1634 | householdaccountservice_URL,accounts/,1111,/custodialinfo |
 
+	Examples:
+		| Agent  | CustodialAccountInfo                                      |
+		| AG1634 | householdaccountservice_URL,accounts/,1111,/custodialinfo |
 
 @accounts
 @get_custodial_account_info
@@ -35,10 +35,10 @@ Scenario Outline: Get custodial account info using blank AccountID
 	When User do a get call of "<CustodialAccountInfo>" API
 	Then Status Code is "404"
 	Then Response should be returned as empty
-	Examples: 
-	| Agent  | CustodialAccountInfo                                        |
-	| AG1634 | householdaccountservice_URL,accounts/,,/custodialinfo |
 
+	Examples:
+		| Agent  | CustodialAccountInfo                                  |
+		| AG1634 | householdaccountservice_URL,accounts/,,/custodialinfo |
 
 @accounts
 @get_custodial_account_info
@@ -48,10 +48,10 @@ Scenario Outline: Get custodial account info without authorization
 	When User do a get call of "<CustodialAccountInfo>" API
 	Then Status Code is "401"
 	Then Response should return as "unauthorized" request
-	Examples: 
-	| Agent  | CustodialAccountInfo                                        |
-	| AG1634 | householdaccountservice_URL,accounts/,AC5996,/custodialinfo |
-	
+
+	Examples:
+		| Agent  | CustodialAccountInfo                                        |
+		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/custodialinfo |
 
 @accounts
 @get_custodial_account_info
@@ -61,10 +61,10 @@ Scenario Outline: Get custodial account info if user don't have proper authoriza
 	When User do a get call of "<CustodialAccountInfo>" API
 	Then Status Code is "403"
 	Then Response should return as "forbidden" request
-	Examples: 
-	| Agent  | CustodialAccountInfo                                        |
-	| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/custodialinfo |
 
+	Examples:
+		| Agent  | CustodialAccountInfo                                        |
+		| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/custodialinfo |
 
 @accounts
 @get_custodial_account_info
@@ -74,6 +74,7 @@ Scenario Outline: Get custodial account info using special charachter in Account
 	When User do a get call of "<CustodialAccountInfo>" API
 	Then Status Code is "404"
 	Then Response should be returned as empty
-	Examples: 
-	| Agent  | CustodialAccountInfo                                         |
-	| AG1634 | householdaccountservice_URL,accounts/, AH23Z*,/custodialinfo |
+
+	Examples:
+		| Agent  | CustodialAccountInfo                                         |
+		| AG1634 | householdaccountservice_URL,accounts/, AH23Z*,/custodialinfo |

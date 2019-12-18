@@ -119,6 +119,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JSON\GetHoldingsofAccountjson.cs" />
+    <Compile Include="StepDefs\CommonMethods\PeriodCalculationCode.cs" />
+    <Compile Include="StepDefs\CommonMethods\JSON.cs" />
     <Compile Include="StepDefs\CommonMethods\CommonMethods.cs" />
     <Compile Include="StepDefs\HouseholdAccountServices\GetActivityofAnAccount.cs" />
     <Compile Include="StepDefs\HouseholdAccountServices\GetHoldingofAccount.cs" />
@@ -132,12 +134,17 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Default.srprofile" />
+    <None Include="Features\DocumentServices\GetDASproposalsforClient.feature" />
+    <None Include="Features\DocumentServices\GetEsignatureProposals.feature" />
+    <None Include="Features\Documents\GetListOfDocumentsForClient.feature" />
     <None Include="Features\HouseholdAccountServices\DownloadHouseHoldRealizedGainLoss.feature" />
     <None Include="Features\HouseholdAccountServices\GetAccountByAccountId.feature" />
     <None Include="Features\HouseholdAccountServices\GetAccountHoldingByStrategy.feature" />
     <None Include="Features\HouseholdAccountServices\GetAccountHoldingsByAssetClass.feature" />
     <None Include="Features\HouseholdAccountServices\GetActivityofAnAccount.feature" />
+    <None Include="Features\HouseholdAccountServices\GetHouseholdAccountPortfolioSummary .feature" />
     <None Include="Features\HouseholdAccountServices\GetSheetNames.feature" />
+    <None Include="Features\Household_AdvisorContractAPIs\GetMarketValuesOfHouseholdByHouseholdID.feature" />
     <None Include="Features\Preferences\CreateDataSettings.feature" />
     <None Include="Features\Preferences\CreateWebAccess.feature" />
     <None Include="Features\Preferences\GetAdvisorContractWebAccess.feature" />
@@ -179,6 +186,8 @@
     <None Include="Features\Household_AdvisorContractAPIs\GetHouseholdPortfolioSummary.feature" />
     <None Include="Features\Household_AdvisorContractAPIs\GetHouseholdPointToPointPortfolioSummary.feature" />
     <None Include="Features\Household_AdvisorContractAPIs\GetHouseholdDetailsByContractorID.feature" />
+    <None Include="Features\Preferences\GetHouseholdNotificationSettings.feature" />
+    <None Include="Features\Preferences\GetPageSetting.feature" />
     <None Include="Features\Preferences\Preferences_EdeliverySettings.feature" />
     <None Include="Features\Preferences\PreferencesWebAccess.feature" />
     <None Include="Features\Preferences\Preferences_DataSettings.feature" />
@@ -186,6 +195,7 @@
     <None Include="Features\HouseholdAccountServices\GetStrategistAllocation.feature" />
     <None Include="Features\HouseholdAccountServices\GetAssetclass.feature" />
     <None Include="Features\HouseholdAccountServices\GetTaxStatement.feature" />
+    <None Include="Features\Households\GetHouseholdByHouseholdId.feature" />
     <None Include="packages.config" />
     <None Include="extent-config.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

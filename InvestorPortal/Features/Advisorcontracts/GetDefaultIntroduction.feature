@@ -1,6 +1,8 @@
 ﻿Feature: GetDefaultIntroduction
+URL: /api/advisorcontracts/v1/defaultintroduction
 
-@DefaultIntroduction_PositiveCase
+@positive
+@DefaultIntroduction_ValidData
 Scenario Outline: Verify default introduction text
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDetailsForContract>" API
@@ -12,7 +14,8 @@ Scenario Outline: Verify default introduction text
 		| GetDetailsForContract                    | Agent  |
 		| advisorcontracts_URL,defaultintroduction | AG1634 |
 
-@DefaultIntroduction_NegativeCase_InvalidURL
+@negative
+@DefaultIntroduction_InvalidURL
 Scenario Outline: Verify default introduction details are not displayed for invalid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDetailsForContract>" API
@@ -23,7 +26,8 @@ Scenario Outline: Verify default introduction details are not displayed for inva
 		| GetDetailsForContract                        | Agent  |
 		| advisorcontracts_URL,defaultintroduction/abc | AG1634 |
 
-@DefaultIntroduction_NegativeCase_WithoutLogin
+@negative
+@DefaultIntroduction_WithoutLogin
 Scenario Outline: Verify default introduction details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetDetailsForContract>" API

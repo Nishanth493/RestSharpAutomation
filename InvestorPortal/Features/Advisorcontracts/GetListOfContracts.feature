@@ -1,6 +1,8 @@
 ﻿Feature: GetListOfContracts
+URL: /api/advisorcontracts/v1
 
-@ListOfContracts_PositiveCase
+@positive
+@ListOfContracts_ValidData
 Scenario Outline: Verify the list of contracts
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetListOfContracts>" API
@@ -12,8 +14,8 @@ Scenario Outline: Verify the list of contracts
 	| GetListOfContracts		| Agent  |
 	| advisorcontracts_URL		| AG1634 |
 	
-
-@ListOfContracts_NegativeCase_InvalidURL
+@negative
+@ListOfContracts_InvalidURL
 Scenario Outline: Verify list of contracts details are not displayed for invalid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetListOfContracts>" API
@@ -24,7 +26,8 @@ Scenario Outline: Verify list of contracts details are not displayed for invalid
 	| GetListOfContracts			| Agent	 |
 	| advisorcontracts_URL,abc		| AG1634 |
 
-@ListOfContracts_NegativeCase_WithoutLogin
+@negative
+@ListOfContracts_WithoutLogin
 Scenario Outline: Verify list of contracts details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetListOfContracts>" API

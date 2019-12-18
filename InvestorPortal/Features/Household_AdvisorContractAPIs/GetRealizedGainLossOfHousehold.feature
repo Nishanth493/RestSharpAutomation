@@ -1,7 +1,6 @@
 ﻿Feature: GetRealizedGainLossOfHousehold
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+API URL : /api/householdaccountservice/v1/households/{householdid}/realizedgainloss/{startdate}/{enddate}
+
 
 @Household_GetRealizedGainLossOfHousehold_Positive
 @positive
@@ -9,14 +8,13 @@ Scenario Outline: Household_GetRealizedGainLossOfHousehold_Positive
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
 	Then response should have "shortTerm,longTerm,longTermDistribution,shortTermDistribution,firstPurchaseDate,lastPurchaseDate,firstSaleDate,lastSaleDate,proceeds,holdings,gainLossAmount" fields
-	#Then response should match "response.advisorContractId" as "AG1634" for household details
+	Then response should match "response.termDistribution.[*].householdId" as "CA5ZQ9" 
 	Then Status Code is "200"
 	Then Response is Not Empty
 	
 	Examples: 
 	| Agent  | GetHouseHoldDetails                           |                                  
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9/realizedgainloss/2009-01-06/2019-11-01|
-	| AG1634 | householdaccountservice_URL,households/CA5ZQ9/realizedgainloss/2009-01-06/2019-11-01?page=3&pageSize=500|
 
 @Household_GetRealizedGainLossOfHousehold_Negative
 @negative

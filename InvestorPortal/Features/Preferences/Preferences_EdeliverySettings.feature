@@ -1,4 +1,6 @@
 ﻿Feature: Preferences_EdeliverySettings
+API URL: /api/preferences/v1/households/{householdId}/edeliverysettings
+
 
 		@Preferences_EdeliverySettings_Positive
 		@positive
@@ -6,7 +8,6 @@ Scenario Outline: Preferences_EdeliverySettings_Positive
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetEdeliverySettings>" API
 	Then response should have "docTypeCD,docTypeDescription,prefTypeCD,prefTypeCDDescription" fields
-	#Then response should match "response.advisorContractId" as "AG1634" for household details
 	Then Status Code is "200"
 	Then Response is Not Empty
 	

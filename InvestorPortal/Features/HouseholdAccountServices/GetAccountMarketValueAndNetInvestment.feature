@@ -10,7 +10,7 @@ Scenario Outline: Get account Market value and Net Investment for
 	Then Status Code is "200"
 	Then response should have "date,marketValue,netInvestment" fields
 	Then response should match "Response.[0].date" as "<startDate>T00:00:00"
-	#Then User validates data for "<PeriodType>" frequency using ".date" element of JSON response
+	Then User verify "<PeriodType>" data returned within dates "<startDate>" to "<endDate>" for ".date" field
 
 	Examples:
 		| PeriodType | Agent  | MarketValueAndNetInvestmentOfAnAccount                                    | startDate  | endDate    |

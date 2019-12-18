@@ -1,56 +1,53 @@
 ﻿Feature: SubmittingConfirmationEmailIntoEMailQ
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+
 
 	@Household_SubmittingConfirmationEmailIntoEMailQ_Positive
 	@positive
 Scenario Outline: Household_SubmittingConfirmationEmailIntoEMailQ_Positive
 	Given User is Authorised on eWM as an AgentId "<Agent>"
-	When User do a post call of "<GetHouseHoldDetails>" API
+	When User do a post call of "<SubmittingConfirmationEmail>" API
 	Then response should have "true" fields
-	#Then response should match "response.advisorContractId" as "AG1634" for household details
 	Then Status Code is "200"
 	Then Response is Not Empty
 	
 	Examples: 
-	| Agent  | GetHouseHoldDetails                           |                                  
+	| Agent  | SubmittingConfirmationEmail                           |                                  
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9/edeliveryconfirmation|
 
 	@Household_SubmittingConfirmationEmailIntoEMailQ_Negative
 	@negative
 Scenario Outline: Household_SubmittingConfirmationEmailIntoEMailQ_Negative
 	Given User is Authorised on eWM as an AgentId "<Agent>"
-	When User do a post call of "<GetHouseHoldDetails>" API
+	When User do a post call of "<SubmittingConfirmationEmail>" API
 	Then Status Code is "404"
 	Then Response should be returned as empty
 
 	Examples: 
-	| Agent  | GetHouseHoldDetails                           |                                  
+	| Agent  | SubmittingConfirmationEmail                           |                                  
 	| AG1634 | householdaccountservice_URL,households//edeliveryconfirmation|
 
 	@Household_SubmittingConfirmationEmailIntoEMailQ_Negative_InvalidHouseHoldID
 	@negative
 	Scenario Outline: Household_SubmittingConfirmationEmailIntoEMailQ_Negative_InvalidHouseHoldID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
-	When User do a get call of "<GetHouseHoldDetails>" API
+	When User do a get call of "<SubmittingConfirmationEmail>" API
 	Then Status Code is "404"
 	Then Response should be returned as empty
 
 	Examples: 
-	| Agent  | GetHouseHoldDetails                                             |
+	| Agent  | SubmittingConfirmationEmail                                             |
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9/edeliveryconfirmation|
 
 	@Household_SubmittingConfirmationEmailIntoEMailQ_Negative_HouseHoldIDWithSpecialCharacters
 	@negative
 	Scenario Outline: Household_SubmittingConfirmationEmailIntoEMailQ_Negative_HouseHoldIDWithSpecialCharacters
 	Given User is Authorised on eWM as an AgentId "<Agent>"
-	When User do a get call of "<GetHouseHoldDetails>" API
+	When User do a get call of "<SubmittingConfirmationEmail>" API
 	Then Status Code is "404"
 	Then Response should be returned as empty
 
 	Examples: 
-	| Agent  | GetHouseHoldDetails                                             |
+	| Agent  | SubmittingConfirmationEmail                                             |
 	| AG1634 | householdaccountservice_URL,households/CA5^%$/edeliveryconfirmation|
 
 @Household_SubmittingConfirmationEmailIntoEMailQ_Negative_WithoutLogin

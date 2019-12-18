@@ -1,6 +1,8 @@
 ﻿Feature: GetDetailsForContract
+URL: /api/advisorcontracts/v1/{id}
 
-@DetailsForContract_PositiveCase
+@positive
+@DetailsForContract_ValidData
 Scenario Outline: Verify details of contract id
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDetailsForContract>" API
@@ -13,8 +15,8 @@ Scenario Outline: Verify details of contract id
 	| GetDetailsForContract					| Agent  |
 	| advisorcontracts_URL,AgentDetails_ID 		| AG1634 |
 	
-
-@DetailsForContract_NegativeCase_InvalidURL
+@negative
+@DetailsForContract_InvalidURL
 Scenario Outline: Verify list of contracts details are not displayed for invalid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDetailsForContract>" API
@@ -26,7 +28,8 @@ Scenario Outline: Verify list of contracts details are not displayed for invalid
 	| advisorcontracts_URL,AgentDetails_ID,/abc		| AG1634 |
 	| advisorcontracts_URL,AG#&^##				| AG1634 |
 
-@DetailsForContract_NegativeCase_WithoutLogin
+@negative
+@DetailsForContract_WithoutLogin
 Scenario Outline: Verify lis of contracts details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetDetailsForContract>" API
@@ -37,7 +40,8 @@ Scenario Outline: Verify lis of contracts details are not displayed without auth
 	| GetDetailsForContract				| Agent  |
 	| advisorcontracts_URL,AgentDetails_ID		| AG1634 |
 
-@DetailsForContract_NegativeCase_WithOtherUserLogin
+@negative
+@DetailsForContract_WithOtherUserLogin
 Scenario Outline: Verify contracts id details are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDetailsForContract>" API

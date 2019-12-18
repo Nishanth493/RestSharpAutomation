@@ -265,3 +265,6 @@ __pycache__/
 /InvestorPortal/Features/Advisorcontracts/*.feature.cs
 /InvestorPortal/Features/Household_AdvisorContractAPIs/*.feature.cs
 /InvestorPortal/Features/Preferences/*.feature.cs
+/InvestorPortal/Features/Households/*.feature.cs
+/InvestorPortal/Features/Documents/*.feature.cs
+/InvestorPortal/Features/*/*.feature.cs

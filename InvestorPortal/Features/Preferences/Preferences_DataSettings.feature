@@ -1,4 +1,5 @@
 ﻿Feature: Preferences_DataSettings
+API URL: /api/preferences/v1/households/{householdId}/datasettings
 
 		@Preferences_DataSettings_Positive
 		@positive
@@ -6,7 +7,6 @@ Scenario Outline: Preferences_DataSettings_Positive
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDataSettings>" API
 	Then response should have "preferenceTypeCD,displaySetting,preferenceTypeDescription" fields
-	#Then response should match "response.advisorContractId" as "AG1634" for household details
 	Then Status Code is "200"
 	Then Response is Not Empty
 	

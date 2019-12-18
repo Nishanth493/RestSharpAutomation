@@ -9,11 +9,11 @@ Scenario Outline: Get holdings by asset class for an account
 	When User do a get call of "<HoldingsByAssetClass>" API
 	Then Status Code is "200"
 	Then response should have "id,name,amount,assetClasses,hasAssetClasses,percentage,className" fields
-	Then response should match "Response.[0].name" as "<name>"
+	Then response should match "Response.[*].percentage" as "<Percentage>"
 
 	Examples:
-		| Agent  | HoldingsByAssetClass                                               | name                            |
-		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass | BlackRock Liquidity T-Fund Mgmt |
+		| Agent  | HoldingsByAssetClass                                               | Percentage |
+		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass | 100        |
 
 @accounts
 @get_account_holdings_by_assetclass

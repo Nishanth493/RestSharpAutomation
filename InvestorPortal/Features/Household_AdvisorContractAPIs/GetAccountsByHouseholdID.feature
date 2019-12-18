@@ -1,4 +1,6 @@
 ﻿Feature: GetAccountsByHouseholdID
+API URL: /api/householdaccountservice/v1/households/{householdid}/accounts
+
 
 		@AdvisorContracts_GetAccountsByHouseholdID_Positive
 		@positive

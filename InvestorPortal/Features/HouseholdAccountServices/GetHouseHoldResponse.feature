@@ -1,6 +1,8 @@
 ﻿Feature: GetHouseHoldResponse
+URL: /api/householdaccountservice/v1/households/households/bypage
 
-@HouseHoldResponseDetails_PositiveCase_ValidData
+@positive
+@HouseHoldResponseDetails_ValidData
 Scenario Outline: Verify strategist allocation details are displayed for valid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldResponse>" API
@@ -12,7 +14,8 @@ Scenario Outline: Verify strategist allocation details are displayed for valid d
 		| Agent  | GetHouseHoldResponse                                     |
 		| AG1634 | householdaccountservice_URL,households/households/bypage |
 
-@HouseHoldResponseDetails_NegativeCase_InvalidHOuseHoldID
+@negative
+@HouseHoldResponseDetails_InvalidHOuseHoldID
 Scenario Outline: Verify strategist allocation details are not displayed for invalid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldResponse>" API
@@ -23,7 +26,8 @@ Scenario Outline: Verify strategist allocation details are not displayed for inv
 		| GetHouseHoldResponse                                          | Agent  |
 		| householdaccountservice_URL,households/households/bypage,/ABC | AG1634 |
 
-@HouseHoldResponseDetails_NegativeCase_WithoutLogin
+@negative
+@HouseHoldResponseDetails_WithoutLogin
 Scenario Outline: Verify strategist allocation details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetHouseHoldResponse>" API
@@ -34,7 +38,8 @@ Scenario Outline: Verify strategist allocation details are not displayed without
 		| Agent  | GetHouseHoldResponse                                     |
 		| AG1634 | householdaccountservice_URL,households/households/bypage |
 
-@HouseHoldResponseDetails_NegativeCase_WithOtherUserLogin
+@negative
+@HouseHoldResponseDetails_WithOtherUserLogin
 Scenario Outline: Verify strategist allocation details are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldResponse>" API
