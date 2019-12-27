@@ -1,8 +1,9 @@
 ﻿Feature: GetHouseHoldDetailsByHouseholdID
+API URL: /api/householdaccountservice/v1/households/{householdid}
 
 
 	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Positive
-	@Positive
+	@positive
 	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Positive
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
@@ -16,7 +17,7 @@
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9|
 
 	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative
-	@Negative
+	@negative
 	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
@@ -28,7 +29,7 @@
 	| AG1634 | householdaccountservice_URL,households/|
 
 	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_InvalidHouseHoldID
-	@Negative
+	@negative
 	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_InvalidHouseHoldID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API
@@ -40,7 +41,7 @@
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9|
 
 	@AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_HouseHoldIDWithSpecialCharacters
-	@Negative
+	@negative
 	Scenario Outline: AdvisorContracts_GetHouseHoldDetailsByHouseholdID_Negative_HouseHoldIDWithSpecialCharacters
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldDetails>" API

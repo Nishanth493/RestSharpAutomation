@@ -51,6 +51,7 @@ Scenario Outline: Preferences_EdeliveryStatus_Negative
 	| AG1634 | preferences_URL,households/CA5*@#/webaccess/edeliverystatus |
 
 @Preferences_EdeliveryStatus_Negative_WithoutLogin
+@negative
 Scenario Outline: Preferences_EdeliveryStatus_Negative_WithoutLogin
 	Given User is not authorised on eWM
 	When User do a get call of "<GetEdeliveryStatus>" API
@@ -63,6 +64,7 @@ Scenario Outline: Preferences_EdeliveryStatus_Negative_WithoutLogin
 
 
 @Preferences_EdeliveryStatus_Negative_WithOtherUserLogin
+@negative
 Scenario Outline: Preferences_EdeliveryStatus_Negative_WithOtherUserLogin
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetEdeliveryStatus>" API

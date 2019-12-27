@@ -1,11 +1,12 @@
 ﻿Feature: GetMarketvaluesofAccount
 
-@GetMarketvaluesofAccount @positive
+@GetMarketvaluesofAccount @positive @Ambika
 Scenario Outline: Verify that market value of funded Account is retrieved periodically based on the provided start and end dates
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetMarketvaluesofAccountservice>,<periodType>" API
 	Then response should have "aplId,asOfDate,value" fields		
 	Then response should contain AplId as "<AplId>"
+	#Then User verify "<periodType>" data returned within dates "2015-03-16" to "2019-11-18" for ".date" field
 	Then Status Code is "200"
 	Then Response is Not Empty
 
@@ -17,12 +18,13 @@ Scenario Outline: Verify that market value of funded Account is retrieved period
 	| Quarterly  | AG1634 | householdaccountservice_URL,accounts/,AH9U47,/marketvalues,/2015-03-16,/2019-11-18/ | AH9U47 |
 	| Yearly     | AG1634 | householdaccountservice_URL,accounts/,AH9U47,/marketvalues,/2015-03-16,/2019-11-18/ | AH9U47 |
 	
-@GetMarketvaluesofAccount @positive
+@GetMarketvaluesofAccount @positive @Ambika
 Scenario Outline: Verify that market value of closed Account is retrieved periodically based on the provided start and end dates
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetMarketvaluesofAccountservice>,<periodType>" API
 	Then response should have "aplId,asOfDate,value" fields		
 	Then response should contain AplId as "<AplId>"
+	#Then User verify "<periodType>" data returned within dates "2013-03-04" to "2019-11-18" for ".date" field
 	Then Status Code is "200"
 	Then Response is Not Empty
 
@@ -32,22 +34,21 @@ Scenario Outline: Verify that market value of closed Account is retrieved period
 	| Weekly     | AG1634 | householdaccountservice_URL,accounts/,AH22M9,/marketvalues,/2013-03-04,/2019-11-18/ | AH22M9 |
 	
 
-@GetMarketvaluesofAccount @positive
+@GetMarketvaluesofAccount @positive @Ambika
 Scenario Outline: Verify that  market value of pending Account is displayed as blank periodically when start and end dates are provided
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetMarketvaluesofAccountservice>,<periodType>" API
 	Then response should have "aplId,asOfDate,value" fields	
-	Then response should contain AplId as "<AplId>"	
+	Then response should contain AplId as "<AplId>"		
 	Then Status Code is "200"
 	Then Response is Not Empty
 
 	Examples: 
 	| periodType | Agent  | GetMarketvaluesofAccountservice                                                     | AplId  |
 	| Daily      | AG1634 | householdaccountservice_URL,accounts/,AH6J62,/marketvalues,/2013-03-04,/2019-11-18/ | AH6J62 |
-	| Weekly     | AG1634 | householdaccountservice_URL,accounts/,AH6J62,/marketvalues,/2013-03-04,/2019-11-18/ | AH6J62 |
-	
+		
 
-@GetMarketvaluesofAccount @negative
+@GetMarketvaluesofAccount @negative @Ambika
 Scenario Outline: Verify that market value of an Account is not retrieved when invalid request is passed
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetMarketvaluesofAccountservice>,<periodType>" API
@@ -58,10 +59,10 @@ Scenario Outline: Verify that market value of an Account is not retrieved when i
 	| Scenario         | periodType | Agent  | GetMarketvaluesofAccountservice                                                     |
 	| Blank            |            | AG1634 | householdaccountservice_URL,accounts/,AH9U47,/marketvalues,/2015-03-16,/2019-11-18/ |
 	| Invalid          | Monthly    | AG1634 | householdaccountservice_URL,accounts/,AH9U47,/marketvalues,/2015                    |
-	| SpecialCharacter |Monthly     | AG1634 | householdaccountservice_URL,accounts/,AH9U47,/marketvalues,/#$@@#$@$                |
+	| SpecialCharacter | Monthly    | AG1634 | householdaccountservice_URL,accounts/,AH9U47,/marketvalues,/#$@@#$@$                |
     
 
-@GetMarketvaluesofAccount @negative
+@GetMarketvaluesofAccount @negative @Ambika
 Scenario Outline: Verify that market value of another Agent's Account is not retrieved 
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetMarketvaluesofAccountservice>,<periodType>" API
@@ -72,7 +73,7 @@ Scenario Outline: Verify that market value of another Agent's Account is not ret
 	| periodType | Agent  | GetMarketvaluesofAccountservice                                                    |
 	| Monthly    | AG1634 | householdaccountservice_URL,accounts/,AH12Z8,/marketvalues,/2015-03-16,/2019-11-18 |
 
-@GetMarketvaluesofAccount @negative
+@GetMarketvaluesofAccount @negative @Ambika
 Scenario Outline: Verify that market value of an Account is not retrieved without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetMarketvaluesofAccountservice>,<periodType>" API

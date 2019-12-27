@@ -2,7 +2,7 @@
 APIURL: /api/preferences/v1/notifications/{notificationType}/advisorcontracts/{advisorContractId}/households/{householdId}
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @positive
 Scenario Outline: Get Household Notification Settings for valid advisor and client
 	Given User is Authorised on eWM as an AgentId "<Advisor>"
@@ -18,7 +18,7 @@ Scenario Outline: Get Household Notification Settings for valid advisor and clie
 		| AG1634  | CA0FZ5      | preferences_URL,notifications/,Goal/,advisorcontracts/ | /households/ |
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @positive
 Scenario Outline: Get Household Notification Settings having AccessType
 	Given User is Authorised on eWM as an AgentId "<Advisor>"
@@ -36,7 +36,7 @@ Scenario Outline: Get Household Notification Settings having AccessType
 		| NoPerformanceRisk | AG1634  | CA0FZ5      | preferences_URL,notifications/,Goal/,advisorcontracts/ | /households/ | ?accessTypeEnum= |
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @negative
 Scenario Outline: Get Household Notification Settings having invalid AccessType
 	Given User is Authorised on eWM as an AgentId "<Advisor>"
@@ -49,7 +49,7 @@ Scenario Outline: Get Household Notification Settings having invalid AccessType
 		| ????***Blank   | AG1634  | CA0FZ5      | preferences_URL,notifications/,Goal/,advisorcontracts/ | /households/ | ?accessTypeEnum= |
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @negative
 Scenario Outline: Get Household Notification Settings having for invalid householdID
 	Given User is Authorised on eWM as an AgentId "<Advisor>"
@@ -62,7 +62,7 @@ Scenario Outline: Get Household Notification Settings having for invalid househo
 		| AG1634  | 11111       | preferences_URL,notifications/,Goal/,advisorcontracts/ | /households/ |
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @negative
 Scenario Outline: Get Household Notification Settings having for blank householdID
 	Given User is Authorised on eWM as an AgentId "<Advisor>"
@@ -75,7 +75,7 @@ Scenario Outline: Get Household Notification Settings having for blank household
 		| AG1634  |             | preferences_URL,notifications/,Goal/,advisorcontracts/ | /households/ |
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @negative
 Scenario Outline: Get Household Notification Settings having for invalid advisor
 	Given User is Authorised on eWM as an AgentId "<Advisor>"
@@ -90,7 +90,7 @@ Scenario Outline: Get Household Notification Settings having for invalid advisor
 		|              | CA0FZ5      | preferences_URL,notifications/,Goal/,advisorcontracts/ | /households/ |
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @negative
 Scenario Outline: Get Household Notification Settings without authorization
 	Given User is not authorised on eWM
@@ -103,7 +103,7 @@ Scenario Outline: Get Household Notification Settings without authorization
 		| CA0FZ5      | preferences_URL,notifications/,Goal/,advisorcontracts/ | /households/ |
 
 @notification
-@get_household_notification_settings
+@GetHouseholdNotificationSettings
 @negative
 Scenario Outline: Get Household Notification Settings if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"

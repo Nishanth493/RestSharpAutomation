@@ -1,19 +1,13 @@
 ﻿using APIAutomationTestingFW.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MongoDB.Bson.IO;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using RestSharp;
 using static GFG;
-using JsonConvert = Newtonsoft.Json.JsonConvert;
 
 namespace InvestorPortal.StepDefs.CommonMethods
 {
@@ -59,6 +53,7 @@ namespace InvestorPortal.StepDefs.CommonMethods
         public void ResponseIsNotEmpty()
         {
             restApi().VerifyResponseIsNotNull();
+            
         }
 
         [Then(@"response should have ""(.*)"" fields")]
@@ -66,6 +61,13 @@ namespace InvestorPortal.StepDefs.CommonMethods
         {
             restApi().VerifyValueIsPresent(values);
         }
+
+        [Then(@"response should not have ""(.*)"" fields")]
+        public void ValueIsNotPresent(string values)
+        {
+            restApi().VerifyValueIsNotPresent(values);
+        }
+
 
         [Then(@"response contains ""(.*)""")]
         public void ThenResponseContains(string value)
@@ -90,7 +92,7 @@ namespace InvestorPortal.StepDefs.CommonMethods
         {
             restApi().ExecuteGetCall("eWMLogin/account/login/");
         }
-        
+
         [Then(@"User verify downloaded file type is ""(.*)""")]
         public void ThenDownloadFileTypeIs(string fileType)
         {
@@ -121,7 +123,7 @@ namespace InvestorPortal.StepDefs.CommonMethods
                 Console.WriteLine("Download File type is found as Json.");
             }
         }
-        
+
         public void SwitchUserHeaders()
         {
             restApi().AddHeader("Referer", "https://" + restApi().GetDataFromConfig("baseUrl") + "/DNeWM/User/LoginHelper.aspx?parent%3dAGARSL%26level%3d81003%26click%3d1%26table%3d2%26perparent%3dADA094%2cBROYAL%26perlevel%3d81002%26preclick%3d1%2c1%26search%3dAGARSL");
@@ -147,6 +149,15 @@ namespace InvestorPortal.StepDefs.CommonMethods
             restApi().ExecuteRequest();
             Console.WriteLine("First 1000 characters of response is " + (restApi().GetResponseData.Content.Length <= 1000 ? restApi().GetResponseData.Content : restApi().GetResponseData.Content.Substring(0, 1000)));
         }
+
+        [When(@"User do a get call of ""(.*)"" API with request url as ""(.*)""")]
+        public void WhenUserDoAGetCallOfAPIWithRequestUrlAs(string p0, string values)
+        {
+            restApi().CreateGetRequest(restApi().GetACombinedString(values.Split(',').ToList()));
+            restApi().ExecuteRequest();
+            Console.WriteLine("First 1000 characters of response is " + (restApi().GetResponseData.Content.Length <= 1000 ? restApi().GetResponseData.Content : restApi().GetResponseData.Content.Substring(0, 1000)));
+        }
+
 
         public void SetHeadersForHouseHoldsPerformance()
         {
@@ -194,7 +205,6 @@ namespace InvestorPortal.StepDefs.CommonMethods
             }
             else if (frequency.ToUpper() == "WEEKLY")
             {
-                //String temp = "";
                 String NextDate = null;
                 String FirstDateRaw = null;
                 DayOfWeek day = 0;
@@ -202,37 +212,41 @@ namespace InvestorPortal.StepDefs.CommonMethods
                 var fieldsCollector = new JsonFieldsCollector(json);
                 var fields = fieldsCollector.GetAllFields();
                 IDictionary<string, string> field2 = new Dictionary<string, string>();
-                //foreach (var field in fields)
-                //    Console.WriteLine($"{field.Key}: '{field.Value}'");
+                //for (int i = 0; i < fields.Count(); i++)
+                //{
+                //    if (fields.ElementAt(i).Key.Contains(JSONElement))
+                //    {
+                //        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+                //    }
+                //}
+
                 for (int i = 0; i < fields.Count(); i++)
                 {
-                    if (fields.ElementAt(i).Key.Contains(JSONElement))
+                    if (fields.ElementAt(i).Key.Contains("cumPortfolio.dataPoints"))
+                    {
+                        if (fields.ElementAt(i).Key.Contains(JSONElement))
+                        {
+                            field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+
+                        }
+
+                    }
+                    if (fields.ElementAt(i).Key.Contains(JSONElement) && !(fields.ElementAt(i).Key.ToString().Split('.').ElementAt(1).Contains("dataPoints")))
                     {
                         field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
                     }
+
                 }
+
                 Console.WriteLine("Total data sets : " + field2.Count());
                 for (int i = 0; i <= field2.Count; i++)
                 {
-
-                    // for (int i = 0; i < fields.Count(); i++)
-                    //if (i == field2.Count())
-                    //{
-                    //    Console.WriteLine("Last date is : " + field2.ElementAt(i).Value);
-                    //    break;
-                    //}
                     DateTime StartDateConverted = Convert.ToDateTime(StartDate);
                     FirstDateRaw = field2.ElementAt(i).Value;
-                    //if (StartDateConverted.ToString() == FirstDateRaw)
-                    //{
                     DateTime FirstDateConvertedone = Convert.ToDateTime(FirstDateRaw);
-                    //string[] s = FirstDateConvertedone.ToString().Split('/');
-                    //string Date = s[1];
-
-                    //String dateonly = FirstDateConvertedone.ToString().Substring(0, s1);
                     if (i == 0 && StartDateConverted.ToString() == FirstDateRaw)
                     {
-                        Console.WriteLine("First date in dataset : " + FirstDateRaw);
+                        Console.WriteLine("First date in dataset : " + FirstDateRaw+"\n User given start date : "+StartDate+"\n Both dates are same \n Expected : Next date in dataset should be friday");
                         day = FirstDateConvertedone.DayOfWeek;
                         Console.WriteLine("Day on first date of dataset : " + day);
                         if (day.ToString() != "Friday")
@@ -241,113 +255,89 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         }
                         if (day.ToString() == "Monday")
                         {
-                            //int NumericDate = Convert.ToInt32(Date);
                             DateTime FridayDate = FirstDateConvertedone.AddDays(4);
                             Console.WriteLine("Rolled off next friday date : " + FridayDate);
-                            //int DateOnNextFriday = NumericDate + 3;
-                            //DateTime FridayDate = Convert.ToDateTime(DateOnNextFriday);
                             FirstDateRaw = FridayDate.ToString();
                             NextDate = field2.ElementAt(i + 1).Value;
                             Console.WriteLine("Next date in dataset : " + NextDate);
                             DateTime NextDateActual = Convert.ToDateTime(NextDate);
-                            Assert.IsTrue(NextDateActual == FridayDate);
+                            Assert.IsTrue(NextDateActual == FridayDate,"Date on position 1 in dataset is nor friday");
                             Console.WriteLine("Validation Passed");
                         }
                         if (day.ToString() == "Tuesday")
                         {
-                            //int NumericDate = Convert.ToInt32(Date);
                             DateTime FridayDate = FirstDateConvertedone.AddDays(3);
                             Console.WriteLine("Rolled off next friday date : " + FridayDate);
-                            //int DateOnNextFriday = NumericDate + 3;
-                            //DateTime FridayDate = Convert.ToDateTime(DateOnNextFriday);
                             FirstDateRaw = FridayDate.ToString();
                             NextDate = field2.ElementAt(i + 1).Value;
                             Console.WriteLine("Next date in dataset : " + NextDate);
                             DateTime NextDateActual = Convert.ToDateTime(NextDate);
-                            Assert.IsTrue(NextDateActual == FridayDate);
+                            Assert.IsTrue(NextDateActual == FridayDate,"Date on position 1 in dataset is nor friday");
                             Console.WriteLine("Validation Passed");
-
                         }
                         if (day.ToString() == "Wednesday")
                         {
-                            //int NumericDate = Convert.ToInt32(Date);
                             DateTime FridayDate = FirstDateConvertedone.AddDays(2);
                             Console.WriteLine("Rolled off next friday date : " + FridayDate);
-                            //int DateOnNextFriday = NumericDate + 3;
-                            //DateTime FridayDate = Convert.ToDateTime(DateOnNextFriday);
                             FirstDateRaw = FridayDate.ToString();
                             NextDate = field2.ElementAt(i + 1).Value;
                             Console.WriteLine("Next date in dataset : " + NextDate);
                             DateTime NextDateActual = Convert.ToDateTime(NextDate);
-                            Assert.IsTrue(NextDateActual == FridayDate);
+                            Assert.IsTrue(NextDateActual == FridayDate, "Date on position 1 in dataset is nor friday");
                             Console.WriteLine("Validation Passed");
-
                         }
                         if (day.ToString() == "Thursday")
                         {
-                            //int NumericDate = Convert.ToInt32(Date);
                             DateTime FridayDate = FirstDateConvertedone.AddDays(1);
                             Console.WriteLine("Rolled off next friday date : " + FridayDate);
-                            //int DateOnNextFriday = NumericDate + 3;
-                            //DateTime FridayDate = Convert.ToDateTime(DateOnNextFriday);
                             FirstDateRaw = FridayDate.ToString();
                             NextDate = field2.ElementAt(i + 1).Value;
                             Console.WriteLine("Next date in dataset : " + NextDate);
                             DateTime NextDateActual = Convert.ToDateTime(NextDate);
-                            Assert.IsTrue(NextDateActual == FridayDate);
+                            Assert.IsTrue(NextDateActual == FridayDate, "Date on position 1 in dataset is nor friday");
                             Console.WriteLine("Validation Passed");
                         }
                         if (day.ToString() == "Friday")
                         {
-                            //int NumericDate = Convert.ToInt32(Date);
                             DateTime FridayDate = FirstDateConvertedone.AddDays(0);
                             Console.WriteLine("Rolled off next friday date : " + FridayDate);
-                            //int DateOnNextFriday = NumericDate + 3;
-                            //DateTime FridayDate = Convert.ToDateTime(DateOnNextFriday);
                             FirstDateRaw = FridayDate.ToString();
                             NextDate = field2.ElementAt(i + 1).Value;
                             Console.WriteLine("Next date in dataset : " + NextDate);
                             DateTime NextDateActual = Convert.ToDateTime(NextDate);
-                            Assert.IsTrue(NextDateActual == FridayDate);
+                            Assert.IsTrue(NextDateActual == FridayDate, "Date on position 1 in dataset is nor friday");
                             Console.WriteLine("Validation Passed");
-
                         }
                         if (day.ToString() == "Saturday")
                         {
-                            //int NumericDate = Convert.ToInt32(Date);
                             DateTime FridayDate = FirstDateConvertedone.AddDays(6);
                             Console.WriteLine("Rolled off next friday date : " + FridayDate);
-                            //int DateOnNextFriday = NumericDate + 3;
-                            //DateTime FridayDate = Convert.ToDateTime(DateOnNextFriday);
                             FirstDateRaw = FridayDate.ToString();
                             NextDate = field2.ElementAt(i + 1).Value;
                             Console.WriteLine("Next date in dataset : " + NextDate);
                             DateTime NextDateActual = Convert.ToDateTime(NextDate);
-                            Assert.IsTrue(NextDateActual == FridayDate);
+                            Assert.IsTrue(NextDateActual == FridayDate, "Date on position 1 in dataset is nor friday");
                             Console.WriteLine("Validation Passed");
                         }
                         if (day.ToString() == "Sunday")
                         {
-                            //int NumericDate = Convert.ToInt32(Date);
                             DateTime FridayDate = FirstDateConvertedone.AddDays(5);
                             Console.WriteLine("Rolled off next friday date : " + FridayDate);
-                            //int DateOnNextFriday = NumericDate + 3;
-                            //DateTime FridayDate = Convert.ToDateTime(DateOnNextFriday);
                             FirstDateRaw = FridayDate.ToString();
                             NextDate = field2.ElementAt(i + 1).Value;
                             Console.WriteLine("Next date in dataset : " + NextDate);
                             DateTime NextDateActual = Convert.ToDateTime(NextDate);
-                            Assert.IsTrue(NextDateActual == FridayDate);
+                            Assert.IsTrue(NextDateActual == FridayDate, "Date on position 1 in dataset is nor friday");
                             Console.WriteLine("Validation Passed");
-
                         }
                     }
                     if (i == 0 && StartDateConverted.ToString() != field2.ElementAt(i).Value)
                     {
+                        Console.WriteLine("First date in dataset : " + FirstDateRaw + "\n User given start date : " + StartDate + "\n Both dates are NOT same \n Expected : First date in dataset should be friday");
                         day = FirstDateConvertedone.DayOfWeek;
-                        Assert.IsTrue(day.ToString() == "Friday");
-                        Console.WriteLine("First date in dataset : " + FirstDateRaw);
+                        Assert.IsTrue(day.ToString() == "Friday","Day on first date of dataset is NOT friday");
                         Console.WriteLine("Day on first date of dataset : " + day);
+                        Console.WriteLine("Validation Passed" + "\n");
                         NextDate = field2.ElementAt(i + 1).Value;
                         string FirstDateOnly = FirstDateRaw.Substring(0, FirstDateRaw.IndexOf("12:00:00"));
                         string NextDateOnly = NextDate.Substring(0, NextDate.IndexOf("12:00:00"));
@@ -358,27 +348,20 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         Console.WriteLine("First date is : " + FirstDateConverted);
                         Console.WriteLine("Next date is : " + NextDateConverted);
                         Assert.IsTrue((int)value.TotalDays == 7, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        Console.WriteLine("Validation Passed" + "\n");
-
+                        Console.WriteLine(" Difference between dates : "+ (int)value.TotalDays+"\n Validation Passed" + "\n");
                     }
-
                     if (i > 0)
                     {
                         FirstDateRaw = field2.ElementAt(i).Value;
                         if (i != field2.Count() - 1)
                         {
                             NextDate = field2.ElementAt(i + 1).Value;
-
                         }
-
                         string FirstDateOnly = FirstDateRaw.Substring(0, FirstDateRaw.IndexOf("12:00:00"));
                         string NextDateOnly = NextDate.Substring(0, NextDate.IndexOf("12:00:00"));
                         DateTime FirstDateConverted = Convert.ToDateTime(FirstDateOnly);
                         DateTime NextDateConverted = Convert.ToDateTime(NextDateOnly);
                         TimeSpan value = NextDateConverted.Subtract(FirstDateConverted);
-
-                        //for (int i1 = 0; i1 < field2.Count - 1; i1++)
-                        //{
                         if (i != field2.Count() - 1)
                         {
                             Console.WriteLine("Data set : " + (i) + "& " + (i + 1) + " :\n");
@@ -390,10 +373,6 @@ namespace InvestorPortal.StepDefs.CommonMethods
                             Console.WriteLine("Last date is : " + FirstDateConverted);
                             break;
                         }
-                        //}
-                        //temp = temp + $"{field.Key}" + ":" + $"{field.Value}";
-                        //SortedList fslist = new SortedList();
-                        //fslist.Add($"{field.Key},'{field.Value}')
                         if (frequency == "Daily")
                         {
                             Assert.IsTrue((int)value.TotalDays == 1, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
@@ -408,7 +387,6 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         {
                             Thread.Sleep(1000);
                         }
-
                         if (frequency == "Monthly")
                         {
                             Assert.IsTrue((int)value.TotalDays == 30, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
@@ -424,28 +402,44 @@ namespace InvestorPortal.StepDefs.CommonMethods
                             Assert.IsTrue((int)value.TotalDays == 90, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
                             Console.WriteLine("Validation Passed" + "\n");
                         }
-
                     }
                 }
-                //string date = temp.Substring(temp.IndexOf(":") + 1);
-                //string dateonly = date.Substring(0, date.IndexOf("12:00:00"));
-                //string dateonly = dateonly.Substring(0, date.IndexOf("12:00:00"));
+            }
+            else if (frequency.ToUpper() == "QUARTERLY")
+            {
+                jsonQuarter(StartDate, EndDate, JSONElement);
+            }
+            else if (frequency.ToUpper() == "YEARLY")
+            {
+                jsonYearly(StartDate, EndDate, JSONElement);
+            }
+            else
+            {
+                Console.WriteLine(frequency+" is Not a valid period type.");
             }
         }
-        [Then(@"User validates data for daily frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
+
+        //[Then(@"User validates data for daily frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
         public void jsonDaily(string StartDate, string EndDate, string JSONElement)
         {
-            String temp = "";
             String NextDate = null;
             String FirstDateRaw = null;
-            DayOfWeek day = 0;
             var json = JToken.Parse(restApi().GetResponseData.Content);
             var fieldsCollector = new JsonFieldsCollector(json);
             var fields = fieldsCollector.GetAllFields();
             IDictionary<string, string> field2 = new Dictionary<string, string>();
+
             for (int i = 0; i < fields.Count(); i++)
             {
-                if (fields.ElementAt(i).Key.Contains(JSONElement))
+                if (fields.ElementAt(i).Key.Contains("cumPortfolio.dataPoints"))
+                {
+                    if (fields.ElementAt(i).Key.Contains(JSONElement))
+                    {
+                        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+
+                    }
+                }
+                if (fields.ElementAt(i).Key.Contains(JSONElement) && !(fields.ElementAt(i).Key.ToString().Split('.').ElementAt(1).Contains("dataPoints")))
                 {
                     field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
                 }
@@ -453,11 +447,9 @@ namespace InvestorPortal.StepDefs.CommonMethods
             Console.WriteLine("Total data sets : " + field2.Count());
             for (int i = 0; i <= field2.Count; i++)
             {
-
                 DateTime StartDateConverted = Convert.ToDateTime(StartDate);
                 FirstDateRaw = field2.ElementAt(i).Value;
                 DateTime FirstDateConvertedone = Convert.ToDateTime(FirstDateRaw);
-
                 if (i == 0)
                 {
                     FirstDateRaw = field2.ElementAt(i).Value;
@@ -471,24 +463,20 @@ namespace InvestorPortal.StepDefs.CommonMethods
                     DateTime NextDateConverted = Convert.ToDateTime(NextDateOnly);
                     TimeSpan value = NextDateConverted.Subtract(FirstDateConverted);
                     Assert.IsTrue((int)value.TotalDays == 1, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                    Console.WriteLine("Validation Passed" + "\n");
+                    Console.WriteLine("Difference between dates : "+ (int)value.TotalDays+"\nValidation Passed" + "\n");
                 }
-
-                    if (i > 0)
+                if (i > 0)
                 {
                     FirstDateRaw = field2.ElementAt(i).Value;
                     if (i != field2.Count() - 1)
                     {
                         NextDate = field2.ElementAt(i + 1).Value;
-
                     }
-
                     string FirstDateOnly = FirstDateRaw.Substring(0, FirstDateRaw.IndexOf("12:00:00"));
                     string NextDateOnly = NextDate.Substring(0, NextDate.IndexOf("12:00:00"));
                     DateTime FirstDateConverted = Convert.ToDateTime(FirstDateOnly);
                     DateTime NextDateConverted = Convert.ToDateTime(NextDateOnly);
                     TimeSpan value = NextDateConverted.Subtract(FirstDateConverted);
-
                     if (i != field2.Count() - 1)
                     {
                         Console.WriteLine("Data set : " + (i) + "& " + (i + 1) + " :\n");
@@ -500,72 +488,82 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         Console.WriteLine("Last date is : " + FirstDateConverted);
                         break;
                     }
-                        Assert.IsTrue((int)value.TotalDays == 1, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        Console.WriteLine("Validation Passed" + "\n");
+                    Assert.IsTrue((int)value.TotalDays == 1, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                    Console.WriteLine("Difference between dates : " + (int)value.TotalDays + "\nValidation Passed" + "\n");
 
                 }
             }
         }
 
-        [Then(@"User validates data for monthly frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
+        //[Then(@"User validates data for monthly frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
         public void jsonmonth(string StartDate, string EndDate, string JSONElement)
         {
-            String temp = "";
             String NextDate = null;
             String FirstDateRaw = null;
-            DayOfWeek day = 0;
             DateTime FirstDateConverted = DateTime.Now;
             var json = JToken.Parse(restApi().GetResponseData.Content);
             var fieldsCollector = new JsonFieldsCollector(json);
             var fields = fieldsCollector.GetAllFields();
             IDictionary<string, string> field2 = new Dictionary<string, string>();
-            //foreach (var field in fields)
-            //    Console.WriteLine($"{field.Key}: '{field.Value}'");
+            //for (int i = 0; i < fields.Count(); i++)
+            //{
+            //    if (fields.ElementAt(i).Key.Contains(JSONElement))
+            //    {
+            //        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+            //    }
+            //}
+
             for (int i = 0; i < fields.Count(); i++)
             {
-                if (fields.ElementAt(i).Key.Contains(JSONElement))
+                if (fields.ElementAt(i).Key.Contains("cumPortfolio.dataPoints"))
+                {
+                    if (fields.ElementAt(i).Key.Contains(JSONElement))
+                    {
+                        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+
+                    }
+
+                }
+                if (fields.ElementAt(i).Key.Contains(JSONElement) && !(fields.ElementAt(i).Key.ToString().Split('.').ElementAt(1).Contains("dataPoints")))
                 {
                     field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
                 }
+
             }
             Console.WriteLine("Total data sets : " + field2.Count());
             for (int i = 0; i < field2.Count; i++)
             {
-
-                // for (int i = 0; i < fields.Count(); i++)
-                //if (i == field2.Count())
-                //{
-                //    Console.WriteLine("Last date is : " + field2.ElementAt(i).Value);
-                //    break;
-                //}
                 DateTime StartDateConverted = Convert.ToDateTime(StartDate);
                 FirstDateRaw = field2.ElementAt(i).Value;
-                //if (StartDateConverted.ToString() == FirstDateRaw)
-                //{
                 DateTime FirstDateConvertedone = Convert.ToDateTime(FirstDateRaw);
                 string[] s = FirstDateConvertedone.ToString().Split('/');
                 string Month = s[0];
                 string Date = s[1];
                 string Year = s[2];
                 string YearOnly = Year.Substring(0, Year.IndexOf("12:00:00"));
-
-
-                //String dateonly = FirstDateConvertedone.ToString().Substring(0, s1);
-                //if (i == 0 && YearOnly.TrimEnd().TrimStart()==StartDate.Split('-').ElementAt(0))
-                if (i == 0&& StartDateConverted.ToString() != field2.ElementAt(i).Value)
+                if (i == 0 && StartDateConverted.ToString() != field2.ElementAt(i).Value)
                 {
                     Console.WriteLine("First date in dataset : " + FirstDateRaw);
-                    //day = FirstDateConvertedone.DayOfWeek;
-                    //Console.WriteLine("Day on first date of dataset : " + day);
-                    //if (day.ToString() != "Friday")
-                    //{
-                    //    Console.WriteLine("Rolling off to next friday date");
-                    //}
                     int TotalMonthDays = DateTime.DaysInMonth(Convert.ToInt32(YearOnly), Convert.ToInt32(Month));
-                    Assert.IsTrue(Convert.ToInt32(Date) == TotalMonthDays,"First date of dataset is not equal to last date of month");
+                    Assert.IsTrue(Convert.ToInt32(Date) == TotalMonthDays, "User given begin date : " + StartDate + " is different from first date in dataset : " + FirstDateRaw + "\n Expected : First date in dataset should be last date of month \n" + "Actual : First date of dataset is NOT equal to last date of month");
+                    Console.WriteLine("User given begin date : "+StartDate+ " is different from first date in dataset : " + FirstDateRaw+ "/ n Expected: First date in dataset should be last date of month \n Actual: First date of dataset : " + FirstDateRaw + " is equal to last date of month \n Validation passed");
                 }
-
-
+                if (i == 0 && StartDateConverted.ToString() == field2.ElementAt(i).Value)
+                {
+                    Console.WriteLine("First date in dataset : " + FirstDateRaw);
+                    NextDate = field2.ElementAt(i + 1).Value;
+                    DateTime NextDateConvertedone = Convert.ToDateTime(NextDate);
+                    string[] s1 = NextDateConvertedone.ToString().Split('/');
+                    string Month1 = s1[0];
+                    string Date1 = s1[1];
+                    string Year1 = s1[2];
+                    string YearOnly1 = Year1.Substring(0, Year1.IndexOf("12:00:00"));
+                    int TotalMonthDays = DateTime.DaysInMonth(Convert.ToInt32(YearOnly1), Convert.ToInt32(Month1));
+                    Assert.IsTrue(Convert.ToInt32(Date1) == TotalMonthDays, "User given begin date : " + StartDate + " is same as first date in dataset : " + FirstDateRaw + "\n Expected : Next date in dataset should be last date of month \n" +
+                        "Actual : Next date of dataset is NOT equal to last date of month");
+                    Console.WriteLine("User given begin date : " + StartDate + " is same as first date in dataset : " + FirstDateRaw + "\n Expected : Next date in dataset should be last date of month \n" +
+                        "Actual : Next date of dataset : "+ NextDate+ " is equal to last date of month \n Validation passed");
+                }
                 if (i > 0)
                 {
                     FirstDateRaw = field2.ElementAt(i).Value;
@@ -582,7 +580,6 @@ namespace InvestorPortal.StepDefs.CommonMethods
                     string Year1 = s1[2];
                     string YearOnly1 = Year1.Substring(0, Year1.IndexOf("12:00:00"));
                     Date dt2 = new Date(Convert.ToInt32(Date1), Convert.ToInt32(Month1), Convert.ToInt32(YearOnly1));
-
                     GFG.getDifference(dt1, dt2);
                     string FirstDateOnly = FirstDateRaw.Substring(0, FirstDateRaw.IndexOf("12:00:00"));
                     string NextDateOnly = NextDate.Substring(0, NextDate.IndexOf("12:00:00"));
@@ -595,161 +592,132 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         Console.WriteLine("First date is : " + FirstDateConverted);
                         Console.WriteLine("Next date is : " + NextDateConverted);
                     }
-                    Console.WriteLine(GFG.getDifference(dt1, dt2));
+                    Console.WriteLine("Difference between dates : "+GFG.getDifference(dt1, dt2));
                     if (i != field2.Count() - 1)
                     {
-                        Assert.IsTrue(Convert.ToDateTime(field2.ElementAt(i).Value) != Convert.ToDateTime(EndDate), "Found end date at position : " + i + " ,Expected position of given end date : " + field2.Count());
-                        //if (NextDateConverted != Convert.ToDateTime(EndDate))
-                        //{
+                        Assert.IsTrue(Convert.ToDateTime(field2.ElementAt(i).Value) != Convert.ToDateTime(EndDate), "Found end date at position : " + i + " ,Expected position of given end date : " + (field2.Count() - 1));
                         Assert.IsTrue((Date == "31") || (Date == "30") || (Date == "29") || (Date == "28"));
-                        Assert.IsTrue((Date1 == "31") || (Date1 == "30") || (Date1 == "29") || (Date1 == "28"));
+                        if (Convert.ToDateTime(field2.ElementAt(i + 1).Value) != Convert.ToDateTime(EndDate))
+                        {
+                            Assert.IsTrue((Date1 == "31") || (Date1 == "30") || (Date1 == "29") || (Date1 == "28"));
+                        }
                         if (Date == "30" && Date1 == "31")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                            Console.WriteLine("Validation passed");
                         }
                         if (Date == "31" && Date1 == "30")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 30, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                            Console.WriteLine("Validation passed");
                         }
                         if (Date == "31" && Date1 == "31")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                            Console.WriteLine("Validation passed");
                         }
                         if (Date == "31" && Date1 == "29")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 29, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                            Console.WriteLine("Validation passed");
                         }
                         if (Date == "29" && Date1 == "31")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                            Console.WriteLine("Validation passed");
                         }
                         if (Date == "31" && Date1 == "28")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 28, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                            Console.WriteLine("Validation passed");
+
                         }
                         if (Date == "28" && Date1 == "31")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
+                            Console.WriteLine("Validation passed");
                         }
-                        //if (i == field2.Count() - 1 && (FirstDateConverted.ToString().Split('/').ElementAt(1) == "31" || FirstDateConverted.ToString().Split('/').ElementAt(1) == "30" || FirstDateConverted.ToString().Split('/').ElementAt(1) == "29" || FirstDateConverted.ToString().Split('/').ElementAt(1) == "28"))
-                        //{
-                        //    if (Date == "30" && Date1 == "31")
-                        //    {
-                        //        Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //    }
-                        //    if (Date == "31" && Date1 == "30")
-                        //    {
-                        //        Assert.IsTrue(GFG.getDifference(dt1, dt2) == 30, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //    }
-                        //    if (Date == "31" && Date1 == "31")
-                        //    {
-                        //        Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //    }
-                        //    if (Date == "31" && Date1 == "29")
-                        //    {
-                        //        Assert.IsTrue(GFG.getDifference(dt1, dt2) == 29, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //    }
-                        //    if (Date == "29" && Date1 == "31")
-                        //    {
-                        //        Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //    }
-                        //    if (Date == "31" && Date1 == "28")
-                        //    {
-                        //        Assert.IsTrue(GFG.getDifference(dt1, dt2) == 28, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //    }
-                        //    if (Date == "28" && Date1 == "31")
-                        //    {
-                        //        Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //    }
                     }
                     if (i == field2.Count() - 1 && NextDateConverted == Convert.ToDateTime(EndDate))
                     {
                         Console.WriteLine("Last date is : " + FirstDateConverted);
                         break;
                     }
-
-
                 }
-
-
-
             }
-            //if (i == field2.Count() - 1 && FirstDateConverted == Convert.ToDateTime(EndDate) && FirstDateConverted.ToString().Split('/').ElementAt(1) != "31" && FirstDateConverted.ToString().Split('/').ElementAt(1) != "30" && FirstDateConverted.ToString().Split('/').ElementAt(1) != "29" && FirstDateConverted.ToString().Split('/').ElementAt(1) != "28")
-            //{
-            //    Console.WriteLine("Last date is : " + FirstDateConverted);
-            //    break;
-            //}
-
-
-
-
-
-            //TimeSpan value = NextDateConverted.Subtract(FirstDateConverted);
-
-            //for (int i1 = 0; i1 < field2.Count - 1; i1++)
-            //{
-
         }
 
-        [Then(@"User validates data for quarterly frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
+        //[Then(@"User validates data for quarterly frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
         public void jsonQuarter(string StartDate, string EndDate, string JSONElement)
         {
-            String temp = "";
             String NextDate = null;
             String FirstDateRaw = null;
-            DayOfWeek day = 0;
             DateTime FirstDateConverted = DateTime.Now;
             var json = JToken.Parse(restApi().GetResponseData.Content);
             var fieldsCollector = new JsonFieldsCollector(json);
             var fields = fieldsCollector.GetAllFields();
             IDictionary<string, string> field2 = new Dictionary<string, string>();
-            //foreach (var field in fields)
-            //    Console.WriteLine($"{field.Key}: '{field.Value}'");
+            //for (int i = 0; i < fields.Count(); i++)
+            //{
+            //    if (fields.ElementAt(i).Key.Contains(JSONElement))
+            //    {
+            //        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+            //    }
+            //}
+
             for (int i = 0; i < fields.Count(); i++)
             {
-                if (fields.ElementAt(i).Key.Contains(JSONElement))
+                if (fields.ElementAt(i).Key.Contains("cumPortfolio.dataPoints"))
+                {
+                    if (fields.ElementAt(i).Key.Contains(JSONElement))
+                    {
+                        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+
+                    }
+
+                }
+                if (fields.ElementAt(i).Key.Contains(JSONElement) && !(fields.ElementAt(i).Key.ToString().Split('.').ElementAt(1).Contains("dataPoints")))
                 {
                     field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
                 }
+
             }
+
             Console.WriteLine("Total data sets : " + field2.Count());
             for (int i = 0; i < field2.Count; i++)
             {
-
-                // for (int i = 0; i < fields.Count(); i++)
-                //if (i == field2.Count())
-                //{
-                //    Console.WriteLine("Last date is : " + field2.ElementAt(i).Value);
-                //    break;
-                //}
                 DateTime StartDateConverted = Convert.ToDateTime(StartDate);
                 FirstDateRaw = field2.ElementAt(i).Value;
-                //if (StartDateConverted.ToString() == FirstDateRaw)
-                //{
                 DateTime FirstDateConvertedone = Convert.ToDateTime(FirstDateRaw);
                 string[] s = FirstDateConvertedone.ToString().Split('/');
                 string Month = s[0];
                 string Date = s[1];
                 string Year = s[2];
                 string YearOnly = Year.Substring(0, Year.IndexOf("12:00:00"));
-
-
-                //String dateonly = FirstDateConvertedone.ToString().Substring(0, s1);
-                //if (i == 0 && YearOnly.TrimEnd().TrimStart()==StartDate.Split('-').ElementAt(0))
-                if (i == 0&& StartDateConverted.ToString() != field2.ElementAt(i).Value)
+                if (i == 0&& Convert.ToDateTime(FirstDateRaw) != Convert.ToDateTime(StartDate))
                 {
-                    Console.WriteLine("First date in dataset : " + FirstDateRaw);
-                    //day = FirstDateConvertedone.DayOfWeek;
-                    //Console.WriteLine("Day on first date of dataset : " + day);
-                    //if (day.ToString() != "Friday")
-                    //{
-                    //    Console.WriteLine("Rolling off to next friday date");
-                    //}
+
+                    
+                    Console.WriteLine("First date in dataset : " + FirstDateRaw + "\n User given start date : " + StartDate + "\n Both dates are NOT same \n Expected : First date in dataset should be last date of month");
                     int TotalMonthDays = DateTime.DaysInMonth(Convert.ToInt32(YearOnly), Convert.ToInt32(Month));
                     Assert.IsTrue(Convert.ToInt32(Date) == TotalMonthDays);
+                    Console.WriteLine("Validation Passed");
                 }
-
-
+                if (i == 0 && Convert.ToDateTime(FirstDateRaw) == Convert.ToDateTime(StartDate))
+                {
+                    Console.WriteLine("First date in dataset : " + FirstDateRaw + "\n User given start date : " + StartDate + "\n Both dates are same \n Expected : Next date in dataset should be last date of month");
+                    NextDate = field2.ElementAt(i + 1).Value;
+                    Console.WriteLine("Next date in dataset : " + NextDate);
+                    DateTime NextDateConvertedone = Convert.ToDateTime(NextDate);
+                    string[] s1 = NextDateConvertedone.ToString().Split('/');
+                    string Month1 = s1[0];
+                    string Date1 = s1[1];
+                    string Year1 = s1[2];
+                    string YearOnly1 = Year1.Substring(0, Year1.IndexOf("12:00:00"));
+                    int TotalMonthDays = DateTime.DaysInMonth(Convert.ToInt32(YearOnly1), Convert.ToInt32(Month1));
+                    Assert.IsTrue(Convert.ToInt32(Date1) == TotalMonthDays);
+                    Console.WriteLine("Validation Passed");
+                }
                 if (i > 0)
                 {
                     FirstDateRaw = field2.ElementAt(i).Value;
@@ -779,15 +747,12 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         Console.WriteLine("First date is : " + FirstDateConverted);
                         Console.WriteLine("Next date is : " + NextDateConverted);
                     }
-                    Console.WriteLine("Difference between dates : "+GFG.getDifference(dt1, dt2)+" days");
-                    if (i != field2.Count() - 1&&(i+1)!= field2.Count() - 1)
+                    Console.WriteLine("Difference between dates : " + GFG.getDifference(dt1, dt2) + " days");
+                    if (i != field2.Count() - 1 && (i + 1) != field2.Count() - 1)
                     {
                         Assert.IsTrue(Convert.ToDateTime(field2.ElementAt(i).Value) != Convert.ToDateTime(EndDate), "Found end date at position : " + i + " ,Expected position of given end date : " + field2.Count());
-                        //if (NextDateConverted != Convert.ToDateTime(EndDate))
-                        //{
-                       
                         Assert.IsTrue((Date == "31") || (Date == "30") || (Date == "29") || (Date == "28"), "Date at position " + i + " is " + FirstDateConvertedone);
-                        Assert.IsTrue((Date == "31") || (Date == "30") || (Date == "29") || (Date == "28"), "Date at position "+i+" is "+NextDateConvertedone);
+                        Assert.IsTrue((Date == "31") || (Date == "30") || (Date == "29") || (Date == "28"), "Date at position " + i + " is " + NextDateConvertedone);
                         if (Date == "30" && Date1 == "30" && Month != "12")
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 92, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
@@ -815,7 +780,7 @@ namespace InvestorPortal.StepDefs.CommonMethods
                             Console.WriteLine("Validation passed");
 
                         }
-                        if (Date == "31" && Date1 == "31"&&Month=="12"&&!(DateTime.IsLeapYear(Convert.ToInt32(YearOnly1))))
+                        if (Date == "31" && Date1 == "31" && Month == "12" && !(DateTime.IsLeapYear(Convert.ToInt32(YearOnly1))))
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 90, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
                             Console.WriteLine("Month of starting date is 12 & both years are not leap years");
@@ -825,100 +790,92 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         if (Date == "31" && Date1 == "31" && Month == "12" && (DateTime.IsLeapYear(Convert.ToInt32(YearOnly1))))
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 91, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                            Console.WriteLine("Month of starting date is 12 & "+YearOnly1+"is leap year");
+                            Console.WriteLine("Month of starting date is 12 & " + YearOnly1 + "is leap year");
                             Console.WriteLine("Validation passed");
 
                         }
-
-
-
-                        //if (Date == "29" && Date1 == "31")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-                        //if (Date == "31" && Date1 == "28")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 28, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-                        //if (Date == "28" && Date1 == "31")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-
-
                     }
                     if (i == field2.Count() - 1 && NextDateConverted == Convert.ToDateTime(EndDate))
                     {
                         Console.WriteLine("Last date is : " + FirstDateConverted);
                         break;
                     }
-                    //&& (NextDateConverted.ToString().Split('/').ElementAt(1)!="30")|| (NextDateConverted.ToString().Split('/').ElementAt(1) != "31")
                 }
             }
         }
 
-        [Then(@"User validates data for Yearly frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
+        //[Then(@"User validates data for Yearly frequency for dates ""(.*)"" and ""(.*)"" using ""(.*)"" element of JSON response")]
         public void jsonYearly(string StartDate, string EndDate, string JSONElement)
         {
-            String temp = "";
             String NextDate = null;
             String FirstDateRaw = null;
-            DayOfWeek day = 0;
             DateTime FirstDateConverted = DateTime.Now;
             var json = JToken.Parse(restApi().GetResponseData.Content);
             var fieldsCollector = new JsonFieldsCollector(json);
             var fields = fieldsCollector.GetAllFields();
             IDictionary<string, string> field2 = new Dictionary<string, string>();
-            //foreach (var field in fields)
-            //    Console.WriteLine($"{field.Key}: '{field.Value}'");
+            //for (int i = 0; i < fields.Count(); i++)
+            //{
+            //    if (fields.ElementAt(i).Key.Contains(JSONElement))
+            //    {
+            //        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+            //    }
+            //}
+
             for (int i = 0; i < fields.Count(); i++)
             {
-                if (fields.ElementAt(i).Key.Contains(JSONElement))
+                if (fields.ElementAt(i).Key.Contains("cumPortfolio.dataPoints"))
+                {
+                    if (fields.ElementAt(i).Key.Contains(JSONElement))
+                    {
+                        field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
+
+                    }
+                }
+                if (fields.ElementAt(i).Key.Contains(JSONElement) && !(fields.ElementAt(i).Key.ToString().Split('.').ElementAt(1).Contains("dataPoints")))
                 {
                     field2.Add(fields.ElementAt(i).Key, fields.ElementAt(i).Value.ToString());
                 }
+
             }
+
             Console.WriteLine("Total data sets : " + field2.Count());
             for (int i = 0; i < field2.Count; i++)
             {
-
-                // for (int i = 0; i < fields.Count(); i++)
-                //if (i == field2.Count())
-                //{
-                //    Console.WriteLine("Last date is : " + field2.ElementAt(i).Value);
-                //    break;
-                //}
                 DateTime StartDateConverted = Convert.ToDateTime(StartDate);
                 FirstDateRaw = field2.ElementAt(i).Value;
-                //if (StartDateConverted.ToString() == FirstDateRaw)
-                //{
                 DateTime FirstDateConvertedone = Convert.ToDateTime(FirstDateRaw);
                 string[] s = FirstDateConvertedone.ToString().Split('/');
                 string Month = s[0];
                 string Date = s[1];
                 string Year = s[2];
                 string YearOnly = Year.Substring(0, Year.IndexOf("12:00:00"));
-
-
-                //String dateonly = FirstDateConvertedone.ToString().Substring(0, s1);
-                //if (i == 0 && YearOnly.TrimEnd().TrimStart()==StartDate.Split('-').ElementAt(0))
-                if (i == 0)
+                if (i == 0 && Convert.ToDateTime(FirstDateRaw) != Convert.ToDateTime(StartDate))
                 {
-                    Console.WriteLine("First date in dataset : " + FirstDateRaw);
-                    //day = FirstDateConvertedone.DayOfWeek;
-                    //Console.WriteLine("Day on first date of dataset : " + day);
-                    //if (day.ToString() != "Friday")
-                    //{
-                    //    Console.WriteLine("Rolling off to next friday date");
-                    //}
+                    Console.WriteLine("First date in dataset : " + FirstDateRaw + "\n User given start date : " + StartDate + "\n Both dates are NOT same \n Expected : First date in dataset should be last date of month");
+                    int TotalMonthDays = DateTime.DaysInMonth(Convert.ToInt32(YearOnly), Convert.ToInt32(Month));
+                    Assert.IsTrue(Convert.ToInt32(Date) == TotalMonthDays);
+                    Console.WriteLine("Validation Passed");
                 }
-
-
+                if (i == 0 && Convert.ToDateTime(FirstDateRaw) == Convert.ToDateTime(StartDate))
+                {
+                    Console.WriteLine("First date in dataset : " + FirstDateRaw + "\n User given start date : " + StartDate + "\n Both dates are same \n Expected : Next date in dataset should be last date of month");
+                    NextDate = field2.ElementAt(i + 1).Value;
+                    Console.WriteLine("Next date in dataset : " + NextDate);
+                    DateTime NextDateConvertedone = Convert.ToDateTime(NextDate);
+                    string[] s1 = NextDateConvertedone.ToString().Split('/');
+                    string Month1 = s1[0];
+                    string Date1 = s1[1];
+                    string Year1 = s1[2];
+                    string YearOnly1 = Year1.Substring(0, Year1.IndexOf("12:00:00"));
+                    int TotalMonthDays = DateTime.DaysInMonth(Convert.ToInt32(YearOnly1), Convert.ToInt32(Month1));
+                    Assert.IsTrue(Convert.ToInt32(Date1) == TotalMonthDays);
+                    Console.WriteLine("Validation Passed");
+                }
                 if (i > 0)
                 {
                     FirstDateRaw = field2.ElementAt(i).Value;
                     Date dt1 = new Date(Convert.ToInt32(Date), Convert.ToInt32(Month), Convert.ToInt32(YearOnly));
-
                     if (i != field2.Count() - 1)
                     {
                         NextDate = field2.ElementAt(i + 1).Value;
@@ -930,13 +887,11 @@ namespace InvestorPortal.StepDefs.CommonMethods
                     string Year1 = s1[2];
                     string YearOnly1 = Year1.Substring(0, Year1.IndexOf("12:00:00"));
                     Date dt2 = new Date(Convert.ToInt32(Date1), Convert.ToInt32(Month1), Convert.ToInt32(YearOnly1));
-
                     GFG.getDifference(dt1, dt2);
                     string FirstDateOnly = FirstDateRaw.Substring(0, FirstDateRaw.IndexOf("12:00:00"));
                     string NextDateOnly = NextDate.Substring(0, NextDate.IndexOf("12:00:00"));
                     FirstDateConverted = Convert.ToDateTime(FirstDateOnly);
                     DateTime NextDateConverted = Convert.ToDateTime(NextDateOnly);
-
                     if (i != field2.Count() - 1)
                     {
                         Console.WriteLine("Data set : " + (i) + "& " + (i + 1) + " :\n");
@@ -947,20 +902,9 @@ namespace InvestorPortal.StepDefs.CommonMethods
                     if (i != field2.Count() - 1)
                     {
                         Assert.IsTrue(Convert.ToDateTime(field2.ElementAt(i).Value) != Convert.ToDateTime(EndDate), "Found end date at position : " + i + " ,Expected position of given end date : " + field2.Count());
-                        //if (NextDateConverted != Convert.ToDateTime(EndDate))
-                        //{
-
                         Assert.IsTrue((Date == "31") || (Date == "30") || (Date == "29") || (Date == "28"), "Date at position " + i + " is " + FirstDateConvertedone);
                         Assert.IsTrue((Date == "31") || (Date == "30") || (Date == "29") || (Date == "28"), "Date at position " + i + " is " + NextDateConvertedone);
-                        //if (Date == "30" && Date1 == "30")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 92, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-                        //if (Date == "30" && Date1 == "31")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 92, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-                        if (Date == "31" && Date1 == "31"&& DateTime.IsLeapYear(Convert.ToInt32(YearOnly1)))
+                        if (Date == "31" && Date1 == "31" && DateTime.IsLeapYear(Convert.ToInt32(YearOnly1)))
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 366, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
                         }
@@ -968,34 +912,20 @@ namespace InvestorPortal.StepDefs.CommonMethods
                         {
                             Assert.IsTrue(GFG.getDifference(dt1, dt2) == 365, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
                         }
-
-                        //if (Date == "31" && Date1 == "30")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 91, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-                        //if (Date == "29" && Date1 == "31")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-                        //if (Date == "31" && Date1 == "28")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 28, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-                        //if (Date == "28" && Date1 == "31")
-                        //{
-                        //    Assert.IsTrue(GFG.getDifference(dt1, dt2) == 31, "Validation failed for following combination:" + "\n" + "First date : " + FirstDateConverted + "\n" + "Next date : " + NextDateConverted);
-                        //}
-
-
                     }
                     if (i == field2.Count() - 1 && NextDateConverted == Convert.ToDateTime(EndDate))
                     {
                         Console.WriteLine("Last date is : " + FirstDateConverted);
                         break;
                     }
-                    //&& (NextDateConverted.ToString().Split('/').ElementAt(1)!="30")|| (NextDateConverted.ToString().Split('/').ElementAt(1) != "31")
                 }
             }
+        }
+
+        [Then(@"response should not contain ""(.*)""")]
+        public void ThenResponseShouldNotContain(string fieldvalue)
+        {
+            restApi().VerifyValueIsNotPresent(fieldvalue);
         }
 
     }

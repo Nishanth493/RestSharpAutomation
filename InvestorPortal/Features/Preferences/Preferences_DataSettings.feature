@@ -51,6 +51,7 @@ Scenario Outline: Preferences_DataSettings_Negative
 	| AG1634 | preferences_URL,households/C$@!#/datasettings |
 
 @Preferences_DataSettings_Negative_WithoutLogin
+@negative
 Scenario Outline: Preferences_DataSettings_Negative_WithoutLogin
 	Given User is not authorised on eWM
 	When User do a get call of "<GetHouseHoldPerformanceDetails>" API
@@ -63,6 +64,7 @@ Scenario Outline: Preferences_DataSettings_Negative_WithoutLogin
 
 
 @Preferences_DataSettings_Negative_WithOtherUserLogin
+@negative
 Scenario Outline: Preferences_DataSettings_Negative_WithOtherUserLogin
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetHouseHoldPerformanceDetails>" API

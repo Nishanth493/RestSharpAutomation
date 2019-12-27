@@ -1,8 +1,7 @@
 ﻿Feature: GetCustodiansForResgistrationType
 URL: /api/advisorcontracts/v1/{id}/custodians/{registrationTypeId}
 
-@positive
-@CustodiansForResgistrationType_ValidData
+@positive @GetCustodiansForResgistrationType @ValidData
 Scenario Outline: Verify list of costodians for the registration id
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetCustodiansForResgistrationType>" API
@@ -14,8 +13,7 @@ Scenario Outline: Verify list of costodians for the registration id
 		| GetCustodiansForResgistrationType                   | Agent  |
 		| advisorcontracts_URL,AgentDetails_ID,/custodians/24 | AG1634 |
 
-@negative
-@CustodiansForResgistrationType_InvalidURL
+@negative @GetCustodiansForResgistrationType @InvalidURL
 Scenario Outline: Verify list of costodians details are not displayed for invalid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetCustodiansForResgistrationType>" API
@@ -27,8 +25,7 @@ Scenario Outline: Verify list of costodians details are not displayed for invali
 		| advisorcontracts_URL,AgentDetails_ID,/custodians/24,/abc | AG1634 |
 		| advisorcontracts_URL,AG#&^##,/custodians/24              | AG1634 |
 
-@negative
-@CustodiansForResgistrationType_WithoutLogin
+@negative @GetCustodiansForResgistrationType @WithoutLogin
 Scenario Outline: Verify list of costodians details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetCustodiansForResgistrationType>" API
@@ -39,8 +36,7 @@ Scenario Outline: Verify list of costodians details are not displayed without au
 		| GetCustodiansForResgistrationType                   | Agent  |
 		| advisorcontracts_URL,AgentDetails_ID,/custodians/24 | AG1634 |
 
-@negative
-@CustodiansForResgistrationType_WithOtherUserLogin
+@negative @GetCustodiansForResgistrationType @WithOtherUserLogin
 Scenario Outline: Verify list of costodians details are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetCustodiansForResgistrationType>" API

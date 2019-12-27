@@ -1,6 +1,6 @@
 ﻿Feature: GetAdvisorContractsDataSettings
 	
-@GetAdvisorContractsDataSettings @positive
+@GetAdvisorContractsDataSettings @positive @Ambika
 Scenario Outline: Verify that Data setting details are retrieved for an Advisor ContractId 
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetAdvisorContractsDataSettingsservice>" API
@@ -12,7 +12,7 @@ Scenario Outline: Verify that Data setting details are retrieved for an Advisor 
 	| Agent  | GetAdvisorContractsDataSettingsservice                 |
 	| AG1634 | Preferences_URL,advisorcontracts/,AG1634/,datasettings |
 
-@GetAdvisorContractsDataSettings @negative
+@GetAdvisorContractsDataSettings @negative @Ambika
 Scenario Outline: Verify that Data setting details are not retrieved for an invalid Advisor ContractId 
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetAdvisorContractsDataSettingsservice>" API
@@ -25,18 +25,18 @@ Scenario Outline: Verify that Data setting details are not retrieved for an inva
 	| SpecialCharacter | AG1634 | Preferences_URL,advisorcontracts/,@#$@#@/,datasettings |
 	| Blank            | AG1634 | Preferences_URL,advisorcontracts/,/,datasettings       |
 
-@GetAdvisorContractsDataSettings @negative
+@GetAdvisorContractsDataSettings @negative @Ambika
 Scenario Outline: Verify that Data setting details are not retrieved for an another Advisor ContractId 
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetAdvisorContractsDataSettingsservice>" API
-	Then Response should be returned as empty
+	Then Response should return as "Forbidden" request
 	Then Status Code is "403"
 
 	Examples: 
 	| Agent  | GetAdvisorContractsDataSettingsservice                 |
 	| AG1634 | Preferences_URL,advisorcontracts/,AGAE32/,datasettings |
 
-@GetAdvisorContractsDataSettings @negative
+@GetAdvisorContractsDataSettings @negative @Ambika
 Scenario Outline:Verify that Data setting details are not retrieved without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetAdvisorContractsDataSettingsservice>" API

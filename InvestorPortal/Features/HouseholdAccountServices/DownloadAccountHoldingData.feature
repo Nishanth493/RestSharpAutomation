@@ -2,7 +2,7 @@
 APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/holdings/download
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @positive
 Scenario Outline: Download Account holding data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -16,7 +16,7 @@ Scenario Outline: Download Account holding data
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdings,/download |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @positive
 Scenario Outline: Download Account holding data with fileType
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -31,7 +31,7 @@ Scenario Outline: Download Account holding data with fileType
 		| EXCEL    | AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdings,/download,?filetype= |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @positive
 Scenario Outline: Download Account holding data with columnName and sorting order
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -44,7 +44,7 @@ Scenario Outline: Download Account holding data with columnName and sorting orde
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdings,/download,?sortcolumnname=Quantity&sortorder=Descending |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @negative
 Scenario Outline: Download Account holding data with fileType blank
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -57,7 +57,7 @@ Scenario Outline: Download Account holding data with fileType blank
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdings,/download,?filetype= |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @negative
 Scenario Outline: Download Account holding data with fileType invalid
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -70,7 +70,7 @@ Scenario Outline: Download Account holding data with fileType invalid
 		| text     | AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdings,/download,?filetype= |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @negative
 Scenario Outline: Download Account holding data using invalid AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -83,7 +83,7 @@ Scenario Outline: Download Account holding data using invalid AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,1111,/holdings,/download |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @negative
 Scenario Outline: Download Account holding data using blank AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -96,7 +96,7 @@ Scenario Outline: Download Account holding data using blank AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,,/holdings,/download |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @negative
 Scenario Outline: Download Account holding data without authorization
 	Given User is not authorised on eWM
@@ -109,7 +109,7 @@ Scenario Outline: Download Account holding data without authorization
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdings,/download |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @negative
 Scenario Outline: Download Account holding data if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -122,7 +122,7 @@ Scenario Outline: Download Account holding data if user don't have proper author
 		| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/holdings,/download |
 
 @accounts
-@download_account_holding_data
+@DownloadAccountHoldingData
 @negative
 Scenario Outline: Download Account holding data using special charachter in AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"

@@ -41,7 +41,7 @@ Scenario Outline: Household_GetRealizedGainLossOfHousehold_Negative
 
 	Examples: 
 	| Agent  | GetHouseHoldDetails                                             |
-	| AG1634 | householdaccountservice_URL,households/CA5ZQ9/realizedgainloss/2009-01-06/2019-11-01?page=3&pageSize=500|
+	| AG1634 | householdaccountservice_URL,households/CA5/realizedgainloss/2009-01-06/2019-11-01?page=3&pageSize=500|
 
 	@Household_GetRealizedGainLossOfHousehold_Negative_HouseHoldIDWithSpecialCharacters
 	@negative

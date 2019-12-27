@@ -1,7 +1,7 @@
 ﻿Feature: GetRealizedGainLossofAccount
 URL:/api/householdaccountservice/v1/accounts/{accountid}/realizedgainloss/{startdate}/{enddate}
 
-@GetRealizedGainLossofAccount @positive
+@GetRealizedGainLossofAccount @positive @Ambika
 Scenario Outline: Verify that Realized Gain Loss of funded Account is retrieved based on the provided start and end dates
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossofAccountservice>" API
@@ -18,7 +18,7 @@ Scenario Outline: Verify that Realized Gain Loss of funded Account is retrieved 
 	| Agent  | GetRealizedGainLossofAccountservice                                                    | HouseholdId |
 	| AG1634 | householdaccountservice_URL,accounts/,AH9U47,/realizedgainloss,/2015-03-16,/2019-11-18 | CA5ZQ9      |
 
-@GetRealizedGainLossofAccount @positive
+@GetRealizedGainLossofAccount @positive @Ambika
 Scenario Outline: Verify that Realized Gain Loss of funded Account is retrieved based on the provided start and end dates and optional paramerters
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossofAccountservice>" API
@@ -31,7 +31,7 @@ Scenario Outline: Verify that Realized Gain Loss of funded Account is retrieved 
 	| Agent  | GetRealizedGainLossofAccountservice                                                                        | HouseholdId |
 	| AG1634 | householdaccountservice_URL,accounts/,AH9U47,/realizedgainloss,/2015-03-16,/2019-11-18?,page=1&,pageSize=2 | CA5ZQ9      |
 
-@GetRealizedGainLossofAccount @positive
+@GetRealizedGainLossofAccount @positive @Ambika
 Scenario Outline: Verify that Realized Gain Loss of closed Account is retrieved based on the provided start and end dates
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossofAccountservice>" API
@@ -48,7 +48,7 @@ Scenario Outline: Verify that Realized Gain Loss of closed Account is retrieved 
 	| Agent  | GetRealizedGainLossofAccountservice                                                    | HouseholdId |
 	| AG1634 | householdaccountservice_URL,accounts/,AH22M9,/realizedgainloss,/2013-03-04,/2019-11-18 | CA0FZ5      |
 
-@GetRealizedGainLossofAccount @positive
+@GetRealizedGainLossofAccount @positive @Ambika
 Scenario Outline: Verify that Realized Gain Loss of pending Account is displayed as blank for provided start and end dates
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossofAccountservice>" API
@@ -63,7 +63,7 @@ Scenario Outline: Verify that Realized Gain Loss of pending Account is displayed
 	| Agent  | GetRealizedGainLossofAccountservice                                                    |
 	| AG1634 | householdaccountservice_URL,accounts/,AH6J62,/realizedgainloss,/2013-03-04,/2019-11-18 |
 
-@GetRealizedGainLossofAccount @negative
+@GetRealizedGainLossofAccount @negative @Ambika
 Scenario Outline: Verify that Realized Gain Loss of an Account is not retrieved when invalid input is provided
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossofAccountservice>" API
@@ -76,7 +76,7 @@ Scenario Outline: Verify that Realized Gain Loss of an Account is not retrieved 
 	| SpecialCharacter | AG1634 | householdaccountservice_URL,accounts/,AH9U48,/realizedgainloss,/#$@@#$@$ |
 	| Invalid          |AG1634  | householdaccountservice_URL,accounts/,AH9U48,/realizedgainloss,/2019-11  |
 
-@GetRealizedGainLossofAccount @negative
+@GetRealizedGainLossofAccount @negative @Ambika
 Scenario Outline: Verify that Realized Gain Loss of another Agent's Account is not retrieved 
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossofAccountservice>" API
@@ -87,7 +87,7 @@ Scenario Outline: Verify that Realized Gain Loss of another Agent's Account is n
 	| Agent  | GetRealizedGainLossofAccountservice                                                    |
 	| AG1634 | householdaccountservice_URL,accounts/,AH12Z8,/realizedgainloss,/2015-03-16,/2019-11-18 |
 
-@GetRealizedGainLossofAccount @negative
+@GetRealizedGainLossofAccount @negative @Ambika
 Scenario Outline: Verify that Realized Gain Loss of an Account is not retrieved without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetRealizedGainLossofAccountservice>" API

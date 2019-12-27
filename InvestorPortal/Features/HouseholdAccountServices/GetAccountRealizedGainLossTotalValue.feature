@@ -2,7 +2,7 @@
 APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/realizedgainlosstotalvalue/{startdate}/{enddate}
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @positive
 Scenario Outline: Get account realizedGainLoss total value by asset class for gainLoss type
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -20,7 +20,7 @@ Scenario Outline: Get account realizedGainLoss total value by asset class for ga
 		| UnClassified     | AG1634 | householdaccountservice_URL,accounts/,AC5996,/realizedgainlosstotalvalue,/3-1-2011/,11-18-2019,?gainLossType=All |
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @positive
 Scenario Outline: Get account realizedGainLoss total value by asset class
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -34,7 +34,7 @@ Scenario Outline: Get account realizedGainLoss total value by asset class
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/realizedgainlosstotalvalue,/3-1-2011/,11-18-2019,?gainLossType=All |
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @negative
 Scenario Outline: Get account realizedGainLoss total value using invalid AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -47,7 +47,7 @@ Scenario Outline: Get account realizedGainLoss total value using invalid Account
 		| All          | AG1634 | householdaccountservice_URL,accounts/,1111,/realizedgainlosstotalvalue,/3-1-2011/,11-18-2019/,?gainLossType= |
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @negative
 Scenario Outline: Get account realizedGainLoss total value using blank AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -60,7 +60,7 @@ Scenario Outline: Get account realizedGainLoss total value using blank AccountID
 		| All          | AG1634 | householdaccountservice_URL,accounts/,,/realizedgainlosstotalvalue,/3-1-2011/,11-18-2019/,?gainLossType= |
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @negative
 Scenario Outline: Get account realizedGainLoss total value without authorization
 	Given User is not authorised on eWM
@@ -73,7 +73,7 @@ Scenario Outline: Get account realizedGainLoss total value without authorization
 		| All          | AG1634 | householdaccountservice_URL,accounts/,AC5996,/realizedgainlosstotalvalue,/3-1-2011/,11-18-2019,?gainLossType=All |
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @negative
 Scenario Outline: Get account realizedGainLoss total value if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -86,7 +86,7 @@ Scenario Outline: Get account realizedGainLoss total value if user don't have pr
 		| All          | AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/realizedgainlosstotalvalue,/3-1-2011/,11-18-2019/,?gainLossType= |
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @negative
 Scenario Outline: Get account realizedGainLoss total value using special charachter in AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -99,7 +99,7 @@ Scenario Outline: Get account realizedGainLoss total value using special charach
 		| All          | AG1634 | householdaccountservice_URL,accounts/,AH23Z*,/realizedgainlosstotalvalue,/3-1-2011/,11-18-2019/,?gainLossType= |
 
 @accounts
-@get_account_realized_gain_loss_total_value
+@GetAccountRealizedGainLossTotalValue
 @negative
 Scenario Outline: Get account realizedGainLoss total value for blank gainLossType
 	Given User is Authorised on eWM as an AgentId "<Agent>"

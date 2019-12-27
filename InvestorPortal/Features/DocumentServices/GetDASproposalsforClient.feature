@@ -2,7 +2,7 @@
 URL: /api/documents/v1/household/{householdId}/proposal
 
 
-@GetDASproposalsforClient @positive
+@GetDASproposalsforClient @positive @Ambika
 Scenario Outline: Verify that DAS Proposal data is retrieved for a client using HouseholdId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDASproposalsforClientService>" API
@@ -19,18 +19,18 @@ Scenario Outline: Verify that DAS Proposal data is retrieved for a client using 
 	| GNW     | AG1634 | Documentservice_URL,household/,CA5ZQ9/,proposal?,savedReportType=,GNW     | CA5ZQ9      |
 	| CSA     | AG1634 | Documentservice_URL,household/,CA5ZQ9/,proposal?,savedReportType=,CSA     | CA5ZQ9      |	
 
-@GetDASproposalsforClient @negative
+@GetDASproposalsforClient @negative @Ambika
 Scenario Outline: Verify that DAS Proposal data is not retrieved for a client using HouseholdId which belongs to another Agent
     Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDASproposalsforClientService>" API	
-	Then Response should be returned as empty
+	Then Response should return as "Forbidden" request
 	Then Status Code is "403"
 	
 	Examples: 
 	| DocType | Agent  | GetDASproposalsforClientService                                           | HouseholdId |
 	| CIP     | AG1634 | Documentservice_URL,household/,CA33G6/,proposal?,savedReportType=,CIP     | CA33G6      |
 
-@GetDASproposalsforClient @negative
+@GetDASproposalsforClient @negative @Ambika
 Scenario Outline:  Verify that DAS Proposal data is not retrieved for a client using invalid HouseholdId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDASproposalsforClientService>" API
@@ -43,7 +43,7 @@ Scenario Outline:  Verify that DAS Proposal data is not retrieved for a client u
 	| SpecialCharacter | AG1634 | Documentservice_URL,household/,#$@$@#/,proposal?,savedReportType=,CSA  |
 	| Blank            | AG1634 | Documentservice_URL,household/,/,proposal?,savedReportType=,CSA        | 
 
-@GetDASproposalsforClient @negative
+@GetDASproposalsforClient @negative @Ambika
 Scenario Outline: Verify that account details are not retrieved without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetDASproposalsforClientService>" API

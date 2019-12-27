@@ -2,7 +2,7 @@
 APIURL: /api/households/v1/{householdId}
 
 @household
-@get_household_by_householdid
+@GetHouseholdByHouseholdId
 @positive
 Scenario Outline: Get household by valid householdId
 	Given User is Authorised on eWM as an AgentId "<AgentId>"
@@ -19,7 +19,7 @@ Scenario Outline: Get household by valid householdId
 		| AG1634  | CA0FZ5      | households_URL, | 1        |
 
 @household
-@get_household_by_householdid
+@GetHouseholdByHouseholdId
 @negative
 Scenario Outline: Get household by invalid householdId
 	Given User is Authorised on eWM as an AgentId "<AgentId>"
@@ -33,7 +33,7 @@ Scenario Outline: Get household by invalid householdId
 		|             | AG1634  | households_URL, |
 
 @notification
-@get_household_by_householdid
+@GetHouseholdByHouseholdId
 @negative
 Scenario Outline: Get household by householdId using invalid agent
 	Given User is Authorised on eWM as an AgentId "<Advisor>"
@@ -48,7 +48,7 @@ Scenario Outline: Get household by householdId using invalid agent
 		|              | CA0FZ5      | households_URL, |
 
 @notification
-@get_household_by_householdid
+@GetHouseholdByHouseholdId
 @negative
 Scenario Outline: Get household by householdId without authorization
 	Given User is not authorised on eWM
@@ -61,7 +61,7 @@ Scenario Outline: Get household by householdId without authorization
 		| CA0FZ5      | households_URL, |
 
 @notification
-@get_household_by_householdid
+@GetHouseholdByHouseholdId
 @negative
 Scenario Outline: Get list of documents for agent if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"

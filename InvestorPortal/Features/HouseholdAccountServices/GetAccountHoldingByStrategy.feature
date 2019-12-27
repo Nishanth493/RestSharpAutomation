@@ -2,7 +2,7 @@
 APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/holdingbystrategy
 
 @accounts
-@get_account_holding_by_strategy
+@GetAccountHoldingByStrategy
 @positive
 Scenario Outline: Get holding by strategy for an account
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -18,7 +18,7 @@ Scenario Outline: Get holding by strategy for an account
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingbystrategy | BlackRock Liquidity T-Fund Mgmt | AC5996    |
 
 @accounts
-@get_account_holding_by_strategy
+@GetAccountHoldingByStrategy
 @negative
 Scenario Outline: Get holding by strategy for invalid AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -31,7 +31,7 @@ Scenario Outline: Get holding by strategy for invalid AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,1111,/holdingbystrategy |
 
 @accounts
-@get_account_holding_by_strategy
+@GetAccountHoldingByStrategy
 @negative
 Scenario Outline: Get holding by strategy for blank AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -44,7 +44,7 @@ Scenario Outline: Get holding by strategy for blank AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,,/holdingbystrategy |
 
 @accounts
-@get_account_holding_by_strategy
+@GetAccountHoldingByStrategy
 @negative
 Scenario Outline: Get holding by strategy without authorization
 	Given User is not authorised on eWM
@@ -57,7 +57,7 @@ Scenario Outline: Get holding by strategy without authorization
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingbystrategy |
 
 @accounts
-@get_account_holding_by_strategy
+@GetAccountHoldingByStrategy
 @negative
 Scenario Outline: Get holding by strategy if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -70,7 +70,7 @@ Scenario Outline: Get holding by strategy if user don't have proper authorizatio
 		| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/holdingbystrategy |
 
 @accounts
-@get_account_holding_by_strategy
+@GetAccountHoldingByStrategy
 @negative
 Scenario Outline: Get holding by strategy using special charachter in AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"

@@ -1,8 +1,7 @@
 ﻿Feature: GetDocumentsByType
 URL: /api/documents/v1/household/{householdId}/odr?startDate={StartDate}&endDate={EndDate}&docType=ODR
 
-@positive
-@DocumentsByTypeDetails_StartDate_EndDate_docType
+@positive @GetDocumentsByType @StartDate_EndDate_docType
 Scenario Outline: Verify documents details for doc type with parameter as start date end date
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDocumentsByType>,<docType>" API
@@ -16,8 +15,7 @@ Scenario Outline: Verify documents details for doc type with parameter as start 
 		| QDR     | AG1634 | documentshousehold_URL,CA0FZ5household_ID,/ODR?startDate=2009-01-06&endDate=2019-12-10&docType= |
 		| QPR     | AG1634 | documentshousehold_URL,CA0FZ5household_ID,/ODR?startDate=2009-01-06&endDate=2019-12-10&docType= |
 
-@negative
-@DocumentsByTypeDetails_InvalidStartDate_InvalidEndDate_InvaliddocType
+@negative @GetDocumentsByType @InvalidStartDate_InvalidEndDate_InvaliddocType
 Scenario Outline: Verify documents details are not displayed for invalid start date, end date and doc type
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDocumentsByType>,<docType>" API
@@ -30,8 +28,7 @@ Scenario Outline: Verify documents details are not displayed for invalid start d
 		| /QPR    | AG1634 | documentshousehold_URL,CA0FZ5household_ID,/ODR?startDate=2009-01-06&endDate=#$#%##%&docType=    |
 		|         | AG1634 | documentshousehold_URL,CA0FZ5household_ID,/ODR?startDate=2009-01-06&endDate=2019-12-10&docType= |
 
-@negative
-@DocumentsByTypeDetails_WithoutLogin
+@negative @GetDocumentsByType @WithoutLogin
 Scenario Outline: Verify documents details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetDocumentsByType>,<docType>" API
@@ -42,8 +39,7 @@ Scenario Outline: Verify documents details are not displayed without authorizati
 		| docType | Agent  | GetDocumentsByType                                                                              |
 		| /QDP    | AG1634 | documentshousehold_URL,CA0FZ5household_ID,/ODR?startDate=2009-01-06&endDate=2019-12-10&docType= |
 
-@negative
-@DocumentsByTypeDetails_WithOtherUserLogin
+@negative @GetDocumentsByType @WithOtherUserLogin
 Scenario Outline: Verify documentsdetails are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetDocumentsByType>,<docType>" API

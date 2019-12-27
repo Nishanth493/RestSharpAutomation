@@ -1,6 +1,6 @@
 ﻿Feature: GetAccountHouseholdPortfolioSummary
 
-@GetAccountHouseholdPortfolioSummary @positive
+@GetAccountHouseholdPortfolioSummary @positive @Ambika
 Scenario Outline: Verify that Portfolio Summary of funded Account is retrieved based on the provided end date
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<householdaccountservice>" API
@@ -14,7 +14,7 @@ Scenario Outline: Verify that Portfolio Summary of funded Account is retrieved b
 		| Agent  | householdaccountservice                                                               | AccountId |
 		| AG1634 | householdaccountservice_URL,accounts/,AH9U47,/performancesummary?,endDate=,2019-11-18 | AH9U47    |
 
-@GetAccountHouseholdPortfolioSummary @positive
+@GetAccountHouseholdPortfolioSummary @positive @Ambika
 Scenario Outline: Verify that Portfolio Summary of closed Account is retrieved based on the provided end date
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<householdaccountservice>" API
@@ -28,13 +28,12 @@ Scenario Outline: Verify that Portfolio Summary of closed Account is retrieved b
 		| Agent  | householdaccountservice                                                               | AccountId |
 		| AG1634 | householdaccountservice_URL,accounts/,AH22M9,/performancesummary?,endDate=,2019-11-18 | AH22M9    |
 
-@GetAccountHouseholdPortfolioSummary @positive
+@GetAccountHouseholdPortfolioSummary @positive @Ambika
 Scenario Outline: Verify that Portfolio Summary of pending Account is displayed as blank for provided end date
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<householdaccountservice>" API
 	Then response should have "accountId,accountName,accountNumber,benchmarks" fields
-	Then response should match "response.accountId" as "<AccountId>"
-	#Then response should match "response.benchmarks" as "null"
+	Then response should match "response.accountId" as "<AccountId>"	
 	Then Status Code is "200"
 	Then Response is Not Empty
 
@@ -42,7 +41,7 @@ Scenario Outline: Verify that Portfolio Summary of pending Account is displayed 
 		| Agent  | householdaccountservice                                                               | AccountId |
 		| AG1634 | householdaccountservice_URL,accounts/,AH6J62,/performancesummary?,endDate=,2019-11-18 | AH6J62    |
 
-@GetAccountHouseholdPortfolioSummary @negative
+@GetAccountHouseholdPortfolioSummary @negative @Ambika
 Scenario Outline: Verify that Portfolio Summary of an Account is not retrieved when invalid parameter is passed
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<householdaccountservice>" API
@@ -55,18 +54,18 @@ Scenario Outline: Verify that Portfolio Summary of an Account is not retrieved w
 		| AG1634 | householdaccountservice_URL,accounts/,AH22M9,/performanc$!@#$@#$            |
 		| AG1634 | householdaccountservice_URL,accounts/,AH22M9,/performancesummary?,endDate=, |
 
-@GetAccountHouseholdPortfolioSummary @negative
+@GetAccountHouseholdPortfolioSummary @negative @Ambika
 Scenario Outline: Verify that Portfolio Summary of another Agent's Account is not retrieved
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<householdaccountservice>" API
-	Then Response should be returned as empty
+	Then Response should return as "Forbidden" request
 	Then Status Code is "403"
 
 	Examples:
 		| Agent  | householdaccountservice                                                               |
 		| AG1634 | householdaccountservice_URL,accounts/,AH12Z8,/performancesummary?,endDate=,2019-11-18 |
 
-@GetAccountHouseholdPortfolioSummary @negative
+@GetAccountHouseholdPortfolioSummary @negative @Ambika
 Scenario Outline: Verify that Portfolio Summary of an Account is not retrieved without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<householdaccountservice>" API

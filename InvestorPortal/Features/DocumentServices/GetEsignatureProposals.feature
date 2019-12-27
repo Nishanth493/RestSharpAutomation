@@ -2,7 +2,7 @@
 URL: /api/documents/v1/household/{clientwebId}/esignproposal
 
 
-@GetEsignatureProposals @positive
+@GetEsignatureProposals @positive @Ambika
 Scenario Outline: Verify that ESignature proposal is retrieved for a client using clientwebId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetEsignatureProposalsService>" API
@@ -18,7 +18,7 @@ Scenario Outline: Verify that ESignature proposal is retrieved for a client usin
 	| GNW     | AG1634 | Documentservice_URL,household/,W0NF39/,esigproposal?,savedReportType=,GNW     | W0NF39      |
 	| CSA     | AG1634 | Documentservice_URL,household/,W0NF39/,esigproposal?,savedReportType=,CSA     | W0NF39      |	
 
-@GetEsignatureProposals @negative
+@GetEsignatureProposals @negative @Ambika
 Scenario Outline: Verify that ESignature proposal is not retrieved for a document type CIP_WBA using clientwebId 
     Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetEsignatureProposalsService>" API	
@@ -30,18 +30,18 @@ Scenario Outline: Verify that ESignature proposal is not retrieved for a documen
 	| CIP_WBA | AG1634 | Documentservice_URL,household/,W0NF39/,esigproposal?,savedReportType=,CIP_WBA | W0NF39      |
 
 
-@GetEsignatureProposals @negative
+@GetEsignatureProposals @negative @Ambika
 Scenario Outline: Verify that ESignature proposal is not retrieved for a client using clientwebId which belongs to another Agent
     Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetEsignatureProposalsService>" API	
-	Then Response should be returned as empty
+	Then Response should return as "Forbidden" request
 	Then Status Code is "403"
 	
 	Examples: 
 	| DocType | Agent  | GetEsignatureProposalsService                                               | clientwebId |
 	| CIP     | AG1634 | Documentservice_URL,household/,W0G3V2/,esigproposal?,savedReportType=,CIP   | W0G3V2      |
 
-@GetEsignatureProposals @negative
+@GetEsignatureProposals @negative @Ambika
 Scenario Outline:  Verify that DAS Proposal data is not retrieved for a client using invalid HouseholdId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetEsignatureProposalsService>" API
@@ -55,7 +55,7 @@ Scenario Outline:  Verify that DAS Proposal data is not retrieved for a client u
 	| SpecialCharacter | AG1634 | Documentservice_URL,household/,#$@$@#/,esigproposal?,savedReportType=,CSA  |
 	| Blank            | AG1634 | Documentservice_URL,household/,/,esigproposal?,savedReportType=,CSA        | 
 
-@GetEsignatureProposals @negative
+@GetEsignatureProposals @negative @Ambika
 Scenario Outline: Verify that account details are not retrieved without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetEsignatureProposalsService>" API

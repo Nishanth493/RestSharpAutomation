@@ -37,6 +37,14 @@ namespace APIAutomationTestingFW.CommonMethods
             restRequest = new RestRequest(url, Method.POST);
             return restRequest;
         }
+        public RestRequest CreatePutRequest(String endpoint)
+        {
+            url = GetDataFromConfig("baseUrl") + endpoint;
+            PrintConsole("URL is ", url);
+            restRequest = new RestRequest(url, Method.PUT);
+            return restRequest;
+        }
+
 
         public IRestResponse ExecuteRequest()
         {

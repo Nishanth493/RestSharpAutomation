@@ -1,8 +1,7 @@
 ﻿Feature: GetRealizedGainLossTotalValue
 URL: /api/householdaccountservice/v1/households/{householdid}/realizedgainlosstotalvalue/{startdate}/{enddate}
 
-@positive
-@RealizedGainLossTotalValue_StartDate_EndDate
+@positive @GetRealizedGainLossTotalValue @StartDate_EndDate
 Scenario Outline: Verify realizedGainLoss total value of an household with parameter as start date end date
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossTotalValue>" API
@@ -19,8 +18,7 @@ Scenario Outline: Verify realizedGainLoss total value of an household with param
 		| householdaccountservice_URL,households/,household_ID,/realizedgainlosstotalvalue,/2009-01-06,/2019-11-01?gainLossType=TermDistribution | AG1634 |
 		| householdaccountservice_URL,households/,household_ID,/realizedgainlosstotalvalue,/2009-01-06,/2019-11-01?gainLossType=UnClassified     | AG1634 |
 
-@negative
-@RealizedGainLossTotalValue_InvalidStartDate_InvalidEndDate
+@negative @GetRealizedGainLossTotalValue @InvalidStartDate_InvalidEndDate
 Scenario Outline: Verify realizedGainLoss total value of an household details are not displayed for invalid start date
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossTotalValue>" API
@@ -33,8 +31,7 @@ Scenario Outline: Verify realizedGainLoss total value of an household details ar
 		| householdaccountservice_URL,households/,household_ID,/realizedgainlosstotalvalue,/2009-01-06,/ | AG1634 |
 		| householdaccountservice_URL,households/,household_ID,/realizedgainlosstotalvalue,/,/           | AG1634 |
 
-@negative
-@RealizedGainLossTotalValue_WithoutLogin
+@negative @GetRealizedGainLossTotalValue @WithoutLogin
 Scenario Outline: Verify realizedGainLoss total value of an household details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetRealizedGainLossTotalValue>" API
@@ -45,8 +42,7 @@ Scenario Outline: Verify realizedGainLoss total value of an household details ar
 		| Agent  | GetRealizedGainLossTotalValue                                                                            |
 		| AG1634 | householdaccountservice_URL,households/,household_ID,/realizedgainlosstotalvalue,/2009-01-06,/2019-11-01 |
 
-@negative
-@RealizedGainLossTotalValue_WithOtherUserLogin
+@negative @GetRealizedGainLossTotalValue @WithOtherUserLogin
 Scenario Outline: Verify realizedGainLoss total value of an household are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossTotalValue>" API
@@ -57,8 +53,7 @@ Scenario Outline: Verify realizedGainLoss total value of an household are not di
 		| Agent  | GetRealizedGainLossTotalValue                                                                                      |
 		| AG1634 | householdaccountservice_URL,households/,OtherAgentHousehold_ID,/realizedgainlosstotalvalue,/2009-01-06,/2019-11-01 |
 
-@negative
-@RealizedGainLossTotalValue_InvalidHouseHoldID
+@negative @GetRealizedGainLossTotalValue @InvalidHouseHoldID
 Scenario Outline: Verify realizedGainLoss total value details are not displayed for invalid householdid that is #$%#%##
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetRealizedGainLossTotalValue>" API

@@ -1,6 +1,6 @@
 ﻿Feature: CreateWebAccess
 	
-@CreateWebAccess @positive
+@CreateWebAccess @positive @Ambika
 Scenario Outline: Verify that user is able to create web access for a specific householdId 
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a post call of "<CreateWebAccessservice>" API to create web access for householdId "CA5ZQ9"
@@ -12,7 +12,7 @@ Scenario Outline: Verify that user is able to create web access for a specific h
 	| Agent  | CreateWebAccessservice                |
 	| AG1634 | Preferences_URL,households/,webaccess |
 
-@CreateWebAccess @negative
+@CreateWebAccess @negative @Ambika
 Scenario Outline: Verify that user is not able to create web access for an invalid householdId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a post call of "<CreateWebAccessservice>" API to create web access for householdId ""
@@ -23,18 +23,18 @@ Scenario Outline: Verify that user is not able to create web access for an inval
 	| Agent  | CreateWebAccessservice                |
 	| AG1634 | Preferences_URL,households/,webaccess |
 
-@CreateWebAccess @negative
+@CreateWebAccess @negative @Ambika
 Scenario Outline: Verify that user is not able to create web access for an another agents's householdId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a post call of "<CreateWebAccessservice>" API to create web access for householdId "CA33G6"
-	Then Response should be returned as empty
+	Then Response should return as "Forbidden" request
 	Then Status Code is "403"
 
 	Examples: 
 	| Agent  | CreateWebAccessservice                |
 	| AG1634 | Preferences_URL,households/,webaccess |
 
-@CreateWebAccess @negative
+@CreateWebAccess @negative @Ambika
 Scenario Outline: Verify that user is not able to create web access without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<CreateWebAccessservice>" API

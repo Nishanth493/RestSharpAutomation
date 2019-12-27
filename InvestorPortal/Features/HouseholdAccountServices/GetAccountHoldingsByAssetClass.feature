@@ -2,7 +2,7 @@
 APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/holdingsbyassetclass
 
 @accounts
-@get_account_holdings_by_assetclass
+@GetAccountHoldingsByAssetClass
 @positive
 Scenario Outline: Get holdings by asset class for an account
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -16,7 +16,7 @@ Scenario Outline: Get holdings by asset class for an account
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass | 100        |
 
 @accounts
-@get_account_holdings_by_assetclass
+@GetAccountHoldingsByAssetClass
 @negative
 Scenario Outline: Get holdings by asset class using invalid AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -29,7 +29,7 @@ Scenario Outline: Get holdings by asset class using invalid AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,1111,/holdingsbyassetclass |
 
 @accounts
-@get_account_holdings_by_assetclass
+@GetAccountHoldingsByAssetClass
 @negative
 Scenario Outline: Get holdings by asset class using blank AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -42,7 +42,7 @@ Scenario Outline: Get holdings by asset class using blank AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,,/holdingsbyassetclass |
 
 @accounts
-@get_account_holdings_by_assetclass
+@GetAccountHoldingsByAssetClass
 @negative
 Scenario Outline: Get holdings by asset class without authorization
 	Given User is not authorised on eWM
@@ -55,7 +55,7 @@ Scenario Outline: Get holdings by asset class without authorization
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass |
 
 @accounts
-@get_account_holdings_by_assetclass
+@GetAccountHoldingsByAssetClass
 @negative
 Scenario Outline: Get holdings by asset class if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -68,7 +68,7 @@ Scenario Outline: Get holdings by asset class if user don't have proper authoriz
 		| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/holdingsbyassetclass |
 
 @accounts
-@get_account_holdings_by_assetclass
+@GetAccountHoldingsByAssetClass
 @negative
 Scenario Outline: Get holdings by asset class using special charachter in AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"

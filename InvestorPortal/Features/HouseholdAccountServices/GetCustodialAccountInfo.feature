@@ -2,7 +2,7 @@
 APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/custodialinfo
 
 @accounts
-@get_custodial_account_info
+@GetCustodialAccountInfo
 @positive
 Scenario Outline: Get custodial account info
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -15,7 +15,7 @@ Scenario Outline: Get custodial account info
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/custodialinfo |
 
 @accounts
-@get_custodial_account_info
+@GetCustodialAccountInfo
 @negative
 Scenario Outline: Get custodial account info using invalid AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -28,7 +28,7 @@ Scenario Outline: Get custodial account info using invalid AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,1111,/custodialinfo |
 
 @accounts
-@get_custodial_account_info
+@GetCustodialAccountInfo
 @negative
 Scenario Outline: Get custodial account info using blank AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -41,7 +41,7 @@ Scenario Outline: Get custodial account info using blank AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,,/custodialinfo |
 
 @accounts
-@get_custodial_account_info
+@GetCustodialAccountInfo
 @negative
 Scenario Outline: Get custodial account info without authorization
 	Given User is not authorised on eWM
@@ -54,7 +54,7 @@ Scenario Outline: Get custodial account info without authorization
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/custodialinfo |
 
 @accounts
-@get_custodial_account_info
+@GetCustodialAccountInfo
 @negative
 Scenario Outline: Get custodial account info if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -67,7 +67,7 @@ Scenario Outline: Get custodial account info if user don't have proper authoriza
 		| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/custodialinfo |
 
 @accounts
-@get_custodial_account_info
+@GetCustodialAccountInfo
 @negative
 Scenario Outline: Get custodial account info using special charachter in AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"

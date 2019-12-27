@@ -2,7 +2,7 @@
 APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/realizedgainloss/download/{startdate}/{enddate}
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download all types of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -17,7 +17,7 @@ Scenario Outline: Download all types of realizedGainLoss value
 		| 1    | AG1634 | householdaccountservice_URL,accounts/,AC8SB3,/realizedgainloss,/download,/2019-01-01,/2019-11-15,?type= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download Short Term type of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -32,7 +32,7 @@ Scenario Outline: Download Short Term type of realizedGainLoss value
 		| 2    | AG1634 | householdaccountservice_URL,accounts/,AC8SB3,/realizedgainloss,/download,/2019-01-01,/2019-11-15,?type= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download Long Term type of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -47,7 +47,7 @@ Scenario Outline: Download Long Term type of realizedGainLoss value
 		| 3    | AG1634 | householdaccountservice_URL,accounts/,AC8SB3,/realizedgainloss,/download,/2019-01-01,/2019-11-15,?type= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download Dividend, Interest, Other types of realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -62,7 +62,7 @@ Scenario Outline: Download Dividend, Interest, Other types of realizedGainLoss v
 		| 4    | AG1634 | householdaccountservice_URL,accounts/,AC8SB3,/realizedgainloss,/download,/2019-01-01,/2019-11-15,?type= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download closed account realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -75,7 +75,7 @@ Scenario Outline: Download closed account realizedGainLoss value
 		| 1    | AG1634 | householdaccountservice_URL,accounts/,AH22M9,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download pending account realizedGainLoss value
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -88,7 +88,7 @@ Scenario Outline: Download pending account realizedGainLoss value
 		| 1    | AG1634 | householdaccountservice_URL,accounts/,AH6J62,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download Account realizedGainLoss value with fileType
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -104,7 +104,7 @@ Scenario Outline: Download Account realizedGainLoss value with fileType
 
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @positive
 Scenario Outline: Download Account realizedGainLoss value with fileType blank
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -118,7 +118,7 @@ Scenario Outline: Download Account realizedGainLoss value with fileType blank
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type=1filetype= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @negative
 Scenario Outline: Download Account realizedGainLoss value with fileType invalid
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -131,7 +131,7 @@ Scenario Outline: Download Account realizedGainLoss value with fileType invalid
 		| text     | AG1634 | householdaccountservice_URL,accounts/,AC5996,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type=1&filetype= |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @negative
 Scenario Outline: Download Account realizedGainLoss value using invalid AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -144,7 +144,7 @@ Scenario Outline: Download Account realizedGainLoss value using invalid AccountI
 		| AG1634 | householdaccountservice_URL,accounts/,1111,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type=1 |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @negative
 Scenario Outline: Download Account realizedGainLoss value using blank AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -157,7 +157,7 @@ Scenario Outline: Download Account realizedGainLoss value using blank AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type=1 |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @negative
 Scenario Outline: Download Account realizedGainLoss value without authorization
 	Given User is not authorised on eWM
@@ -170,7 +170,7 @@ Scenario Outline: Download Account realizedGainLoss value without authorization
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type=1 |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @negative
 Scenario Outline: Download Account realizedGainLoss value if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -183,7 +183,7 @@ Scenario Outline: Download Account realizedGainLoss value if user don't have pro
 		| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type=1 |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @negative
 Scenario Outline: Download Account realizedGainLoss value using special charachter in AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -196,7 +196,7 @@ Scenario Outline: Download Account realizedGainLoss value using special characht
 		| AG1634 | householdaccountservice_URL,accounts/,*AC5996,/realizedgainloss,/download,/3-1-2011,/11-18-2019,?type=1 |
 
 @accounts
-@download_realized_gain_loss
+@DownloadRealizedGainLoss
 @negative
 Scenario Outline: Download Account realizedGainLoss value with blank start date
 	Given User is Authorised on eWM as an AgentId "<Agent>"

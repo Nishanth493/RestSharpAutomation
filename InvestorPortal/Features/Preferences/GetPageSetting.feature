@@ -1,8 +1,7 @@
 ﻿Feature: GetPageSetting
 URL: /api/preferences/v{api-version}/agent/{agentId}/pagesetting 
 
-@positive
-@PageSetting_ValidData
+@positive @GetPageSetting @ValidData
 Scenario Outline: Verify that user is able to get page settings for a specific AgentId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetPageSetting>" API
@@ -14,8 +13,7 @@ Scenario Outline: Verify that user is able to get page settings for a specific A
 		| GetPageSetting                                      | Agent  |
 		| preferences_URL,agent/,AgentDetails_ID,/pagesetting | AG1634 |
 
-@negative
-@PageSetting_InvalidURL
+@negative @GetPageSetting @InvalidURL
 Scenario Outline: Verify page settings details are not displayed for invalid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetPageSetting>" API
@@ -27,8 +25,7 @@ Scenario Outline: Verify page settings details are not displayed for invalid dat
 		| preferences_URL,agent/,AgentDetails_ID,/pagesetting,/abc | AG1634 |
 		| preferences_URL,agent/,AG#$#%#,/pagesetting              | AG1634 |
 
-@negative
-@PageSetting_WithoutLogin
+@negative @GetPageSetting @WithoutLogin
 Scenario Outline: Verify page settings details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetPageSetting>" API
@@ -39,8 +36,7 @@ Scenario Outline: Verify page settings details are not displayed without authori
 		| GetPageSetting                                      | Agent  |
 		| preferences_URL,agent/,AgentDetails_ID,/pagesetting | AG1634 |
 
-@negative
-@PageSetting_WithOtherUserLogin
+@negative @GetPageSetting @WithOtherUserLogin
 Scenario Outline: Verify page settings details are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetPageSetting>" API

@@ -1,6 +1,6 @@
 ﻿Feature: CreateDataSettings
 	
-@CreateDataSettings @positive
+@CreateDataSettings @positive @Ambika
 Scenario Outline: Verify that user is able to create data settings for a specific householdId 
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a post call of "<CreateDataSettingsservice>" API to create data settings for householdId "CA5ZQ9"
@@ -12,7 +12,7 @@ Scenario Outline: Verify that user is able to create data settings for a specifi
 	| Agent  | CreateDataSettingsservice                |
 	| AG1634 | Preferences_URL,households/,datasettings |
 
-@CreateDataSettings @negative
+@CreateDataSettings @negative @Ambika
 Scenario Outline: Verify that user is not able to create data settings for an invalid householdId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a post call of "<CreateDataSettingsservice>" API to create data settings for householdId ""
@@ -23,18 +23,18 @@ Scenario Outline: Verify that user is not able to create data settings for an in
 	| Agent  | CreateDataSettingsservice                |
 	| AG1634 | Preferences_URL,households/,datasettings |
 
-@CreateDataSettings @negative
+@CreateDataSettings @negative @Ambika
 Scenario Outline: Verify that user is not able to create data settings for an another agents's householdId
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a post call of "<CreateDataSettingsservice>" API to create data settings for householdId "CA33G6"
-	Then Response should be returned as empty
+	Then Response should return as "Forbidden" request
 	Then Status Code is "403"
 
 	Examples: 
 	| Agent  | CreateDataSettingsservice                |
 	| AG1634 | Preferences_URL,households/,datasettings |
 
-@CreateDataSettings @negative
+@CreateDataSettings @negative @Ambika
 Scenario Outline: Verify that user is not able to create data settings without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<CreateDataSettingsservice>" API

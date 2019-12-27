@@ -1,8 +1,7 @@
 ﻿Feature: GetAssetclass
 URL: /api/householdaccountservice/v1/households/{householdid}/assetclass
 
-@positive
-@AssetclassDetails_ValidData
+@positive @GetAssetclass @ValidData
 Scenario Outline: Verify assetclass details are displayed for valid data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetAssetclass>" API
@@ -14,8 +13,7 @@ Scenario Outline: Verify assetclass details are displayed for valid data
 		| Agent  | GetAssetclass                                                    |
 		| AG1634 | householdaccountservice_URL,households/,household_ID,/assetclass |
 
-@negative
-@AssetclassDetails_InvalidHOuseHoldID
+@negative @GetAssetclass @InvalidHOuseHoldID
 Scenario Outline: Verify assetclass details are not displayed for invalid householdid that is #$%#%##
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetAssetclass>" API
@@ -26,8 +24,7 @@ Scenario Outline: Verify assetclass details are not displayed for invalid househ
 		| Agent  | GetAssetclass                                                           |
 		| AG1634 | householdaccountservice_URL,households/,Invalidhousehold_ID,/assetclass |
 
-@negative
-@AssetclassDetails_WithoutLogin
+@negative @GetAssetclass @WithoutLogin
 Scenario Outline: Verify assetclass details are not displayed without authorization
 	Given User is not authorised on eWM
 	When User do a get call of "<GetAssetclass>" API
@@ -38,8 +35,7 @@ Scenario Outline: Verify assetclass details are not displayed without authorizat
 		| Agent  | GetAssetclass                                                    |
 		| AG1634 | householdaccountservice_URL,households/,household_ID,/assetclass |
 
-@negative
-@AssetclassDetails_WithOtherUserLogin
+@negative @GetAssetclass @WithOtherUserLogin
 Scenario Outline: Verify assetclass details are not displayed if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetAssetclass>" API

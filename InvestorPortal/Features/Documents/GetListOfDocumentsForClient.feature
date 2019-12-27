@@ -2,7 +2,7 @@
 APIURL: /api/documents/v1/household/{householdId}
 
 @documents
-@get_list_of_documents_for_client
+@GetListOfDocumentsForClient
 @positive
 Scenario Outline: Get list of documents for client having DocType as
 	Given User is Authorised on eWM as an AgentId "<AgentId>"
@@ -14,11 +14,11 @@ Scenario Outline: Get list of documents for client having DocType as
 	Then response should match "Response.[*].storeName" as "<storeName>"
 
 	Examples:
-		| DocType | AgentId | HouseholdID | BaseURL                  | p0          | startDate  | p1        | endDate    | p2        | storeName |
-		| QPR     | AG1634  | CA5ZQ9      | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= | CS        |
+		| DocType | AgentId | HouseholdID | BaseURL                 | p0          | startDate  | p1        | endDate    | p2        | storeName |
+		| QPR     | AG1634  | CA5ZQ9      | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= | CS        |
 
 @documents
-@get_list_of_documents_for_client
+@GetListOfDocumentsForClient
 @negative
 Scenario Outline: Get list of documents for client having invalid DocType as
 	Given User is Authorised on eWM as an AgentId "<AgentId>"
@@ -27,12 +27,12 @@ Scenario Outline: Get list of documents for client having invalid DocType as
 	Then Response should be returned as empty
 
 	Examples:
-		| DocType | AgentId | HouseholdID | BaseURL                  | p0          | startDate  | p1        | endDate    | p2        |
-		|         | AG1634  | CA5ZQ9      | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
-		| AAA     | AG1634  | CA5ZQ9      | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		| DocType | AgentId | HouseholdID | BaseURL                 | p0          | startDate  | p1        | endDate    | p2        |
+		|         | AG1634  | CA5ZQ9      | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		| AAA     | AG1634  | CA5ZQ9      | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
 
 @documents
-@get_list_of_documents_for_client
+@GetListOfDocumentsForClient
 @negative
 Scenario Outline: Get list of documents for invalid client
 	Given User is Authorised on eWM as an AgentId "<AgentId>"
@@ -41,12 +41,12 @@ Scenario Outline: Get list of documents for invalid client
 	Then Response should be returned as empty
 
 	Examples:
-		| HouseholdID | DocType | AgentId | BaseURL                  | p0          | startDate  | p1        | endDate    | p2        |
-		| 1111        | QPR     | AG1634  | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
-		|             | QPR     | AG1634  | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		| HouseholdID | DocType | AgentId | BaseURL                 | p0          | startDate  | p1        | endDate    | p2        |
+		| 1111        | QPR     | AG1634  | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		|             | QPR     | AG1634  | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
 
 @documents
-@get_list_of_documents_for_client
+@GetListOfDocumentsForClient
 @negative
 Scenario Outline: Get list of documents for invalid agent
 	Given User is Authorised on eWM as an AgentId "<AgentId>"
@@ -55,12 +55,12 @@ Scenario Outline: Get list of documents for invalid agent
 	Then Response should be returned as empty
 
 	Examples:
-		| AgentId | DocType | HouseholdID | BaseURL                  | p0          | startDate  | p1        | endDate    | p2        |
-		| 1111    | QPR     | CA5ZQ9      | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
-		|         | QPR     | CA5ZQ9      | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		| AgentId | DocType | HouseholdID | BaseURL                 | p0          | startDate  | p1        | endDate    | p2        |
+		| 1111    | QPR     | CA5ZQ9      | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		|         | QPR     | CA5ZQ9      | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
 
 @documents
-@get_list_of_documents_for_client
+@GetListOfDocumentsForClient
 @negative
 Scenario Outline: Get list of documents for agent without authorization
 	Given User is not authorised on eWM
@@ -69,11 +69,11 @@ Scenario Outline: Get list of documents for agent without authorization
 	Then Response should return as "unauthorized" request
 
 	Examples:
-		| DocType | HouseholdID | BaseURL                  | p0          | startDate  | p1        | endDate    | p2        |
-		| QPR     | CA5ZQ9      | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		| DocType | HouseholdID | BaseURL                 | p0          | startDate  | p1        | endDate    | p2        |
+		| QPR     | CA5ZQ9      | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
 
 @documents
-@get_list_of_documents_for_client
+@GetListOfDocumentsForClient
 @negative
 Scenario Outline: Get list of documents for agent if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -82,5 +82,5 @@ Scenario Outline: Get list of documents for agent if user don't have proper auth
 	Then Response should return as "forbidden" request
 
 	Examples:
-		| AgentId | DocType | HouseholdID | BaseURL                  | p0          | startDate  | p1        | endDate    | p2        |
-		| AG1634  | QPR     | CA1H79      | documentshouseholds_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |
+		| AgentId | DocType | HouseholdID | BaseURL                 | p0          | startDate  | p1        | endDate    | p2        |
+		| AG1634  | QPR     | CA1H79      | documentshousehold_URL, | ?startDate= | 1969-12-31 | &endDate= | 2019-12-17 | &docType= |

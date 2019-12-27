@@ -52,6 +52,7 @@ Scenario Outline: Preferences_WebAccess_Negative
 	| AG1634 | preferences_URL,households/CA@$Q9/webaccess |
 
 @Preferences_WebAccess_Negative_WithoutLogin
+@negative
 Scenario Outline: Preferences_WebAccess_Negative_WithoutLogin
 	Given User is not authorised on eWM
 	When User do a get call of "<GetWebAccessDetails>" API
@@ -64,6 +65,7 @@ Scenario Outline: Preferences_WebAccess_Negative_WithoutLogin
 
 
 @Preferences_WebAccess_Negative_WithOtherUserLogin
+@negative
 Scenario Outline: Preferences_WebAccess_Negative_WithOtherUserLogin
 	Given User is Authorised on eWM as an AgentId "<Agent>"
 	When User do a get call of "<GetWebAccessDetails>" API

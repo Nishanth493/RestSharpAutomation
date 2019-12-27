@@ -2,7 +2,7 @@
 APIURL: /api/householdaccountservice/v1.0/accounts/{accountid}/holdingsbyassetclass/download
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @positive
 Scenario Outline: Download holdings by asset class data
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -16,7 +16,7 @@ Scenario Outline: Download holdings by asset class data
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass/download |
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @positive
 Scenario Outline: Download holdings by asset class data with fileType
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -31,7 +31,7 @@ Scenario Outline: Download holdings by asset class data with fileType
 		| EXCEL    | AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass/download,?filetype= |
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @negative
 Scenario Outline: Download holdings by asset class data with fileType invalid
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -44,7 +44,7 @@ Scenario Outline: Download holdings by asset class data with fileType invalid
 		| text     | AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass/download,?filetype= |
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @negative
 Scenario Outline: Download holdings by asset class data using invalid AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -57,7 +57,7 @@ Scenario Outline: Download holdings by asset class data using invalid AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,1111,/holdingsbyassetclass/download |
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @negative
 Scenario Outline: Download holdings by asset class data using blank AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -70,7 +70,7 @@ Scenario Outline: Download holdings by asset class data using blank AccountID
 		| AG1634 | householdaccountservice_URL,accounts/,,/holdingsbyassetclass/download |
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @negative
 Scenario Outline: Download holdings by asset class data without authorization
 	Given User is not authorised on eWM
@@ -83,7 +83,7 @@ Scenario Outline: Download holdings by asset class data without authorization
 		| AG1634 | householdaccountservice_URL,accounts/,AC5996,/holdingsbyassetclass/download |
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @negative
 Scenario Outline: Download holdings by asset class data if user don't have proper authorization
 	Given User is Authorised on eWM as an AgentId "<Agent>"
@@ -96,7 +96,7 @@ Scenario Outline: Download holdings by asset class data if user don't have prope
 		| AG1634 | householdaccountservice_URL,accounts/,AH23Z5,/holdingsbyassetclass/download |
 
 @accounts
-@download_account_holding_assetclass_data
+@DownloadAccountHoldingAssetclassData
 @negative
 Scenario Outline: Download holdings by asset class data using special charachter in AccountID
 	Given User is Authorised on eWM as an AgentId "<Agent>"

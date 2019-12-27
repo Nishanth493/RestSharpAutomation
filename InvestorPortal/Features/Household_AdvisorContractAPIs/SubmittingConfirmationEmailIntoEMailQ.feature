@@ -1,5 +1,5 @@
 ﻿Feature: SubmittingConfirmationEmailIntoEMailQ
-
+API URL: /api/householdaccountservice/v1/households/{householdid}/edeliveryconfirmation
 
 	@Household_SubmittingConfirmationEmailIntoEMailQ_Positive
 	@positive
@@ -53,22 +53,22 @@ Scenario Outline: Household_SubmittingConfirmationEmailIntoEMailQ_Negative
 @Household_SubmittingConfirmationEmailIntoEMailQ_Negative_WithoutLogin
 Scenario Outline: Household_SubmittingConfirmationEmailIntoEMailQ_Negative_WithoutLogin
 	Given User is not authorised on eWM
-	When User do a get call of "<GetHouseHoldPerformanceDetails>" API
+	When User do a get call of "<SubmittingConfirmationEmail>" API
 	Then Response should return as "unauthorized" request
 	Then Status Code is "401"
 
 	Examples: 
-	| Agent  | GetHouseHoldPerformanceDetails                                  |                                        
+	| Agent  | SubmittingConfirmationEmail                                  |                                        
 	| AG1634 | householdaccountservice_URL,households/CA5ZQ9/edeliveryconfirmation|
 
 @Household_SubmittingConfirmationEmailIntoEMailQ_Negative_WithOtherUserLogin
 Scenario Outline: Household_SubmittingConfirmationEmailIntoEMailQ_Negative_WithOtherUserLogin
 	Given User is Authorised on eWM as an AgentId "<Agent>"
-	When User do a get call of "<GetHouseHoldPerformanceDetails>" API
+	When User do a get call of "<SubmittingConfirmationEmail>" API
 	Then Response should return as "forbidden" request
 	Then Status Code is "403"
 
 	Examples: 
-	| Agent  | GetHouseHoldPerformanceDetails                                  |                                         
+	| Agent  | SubmittingConfirmationEmail                                  |                                         
 	| AG1634 | householdaccountservice_URL,households/CA3KD2/edeliveryconfirmation|
 
